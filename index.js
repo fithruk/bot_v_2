@@ -14,7 +14,7 @@ const {
   addNewSetAction,
 } = require("./actions/addNewSetAction/addNewSetAction");
 const {
-  editExistingSetAction,
+  removeExistingSetAction,
 } = require("./actions/editExistingSetAction/editExistingSetAction");
 const mongoose = require("mongoose");
 
@@ -76,15 +76,15 @@ bot.action(new RegExp(), async (ctx) => {
     // Тип функций приложения, типа ENUM
     const functionsEnum = {
       createNewSet: buttonsLabelsForNewSetCommand[0],
-      editExistSet: buttonsLabelsForNewSetCommand[1],
+      removeExistSet: buttonsLabelsForNewSetCommand[1],
     };
 
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
         addNewSetAction(ctx);
         break;
-      case functionsEnum.editExistSet:
-        editExistingSetAction(ctx);
+      case functionsEnum.removeExistSet:
+        removeExistingSetAction(ctx);
         break;
 
       default:

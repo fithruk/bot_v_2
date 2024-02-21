@@ -2,7 +2,7 @@ const { Markup } = require("telegraf");
 
 const buttonsLabelsForNewSetCommand = [
   "Добавить новый подход",
-  "Редактировать созданный",
+  "Удалить созданный подход",
 ];
 
 const questionTitlesForNewSet = [
