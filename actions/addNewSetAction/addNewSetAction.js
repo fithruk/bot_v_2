@@ -2,6 +2,7 @@ const {
   markupReplier,
   checkUserNameFromCallbackQuery,
   questionTitlesForNewSet,
+  callbackCreator,
 } = require("../../helpers/helpers");
 const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
@@ -49,4 +50,24 @@ const addNewSetAction = async (ctx) => {
   }
 };
 
-module.exports = { addNewSetAction };
+const finishNewSetActon = async (ctx, currentUser, message) => {
+  try {
+    const callback = callbackCreator("weightOfequipment", +message);
+    currentUser.updateUnswers(callback);
+    await apiService.updateTrainingPerfomance(
+      currentUser.userName,
+      currentUser.answers.exersice,
+      currentUser.answers.countOfReps,
+      currentUser.answers.weightOfequipment
+    );
+    currentUser.resetUnswers();
+    currentUser.resetCurrentLabel();
+    currentUser.resetPath();
+    ctx.reply("Подход успешно сохранен!");
+  } catch (error) {
+    console.log("Error in bot.on'message', during finish exersice");
+    console.log(error.message);
+  }
+};
+
+module.exports = { addNewSetAction, finishNewSetActon };

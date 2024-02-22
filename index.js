@@ -6,16 +6,15 @@ const {
   buttonsLabelsForNewSetCommand,
   checkUserName,
   checkUserNameFromCallbackQuery,
-  callbackCreator,
 } = require("./helpers/helpers");
-const { apiService } = require("./apiService/apiService");
 const userState = require("./userState/userState");
 const {
   addNewSetAction,
+  finishNewSetActon,
 } = require("./actions/addNewSetAction/addNewSetAction");
 const {
   removeExistingSetAction,
-} = require("./actions/editExistingSetAction/editExistingSetAction");
+} = require("./actions/removeExistingSetAction/removeExistingSetAction");
 const mongoose = require("mongoose");
 
 require("dotenv").config();
@@ -108,18 +107,7 @@ bot.on("message", async (ctx) => {
     currentUser.answers.currentGroup
   ) {
     if (isNanMessage) return ctx.reply("Некорректные данные веса!");
-
-    const callback = callbackCreator("weightOfequipment", +message);
-    currentUser.updateUnswers(callback);
-    await apiService.updateTrainingPerfomance(
-      userName,
-      currentUser.answers.exersice,
-      currentUser.answers.countOfReps,
-      currentUser.answers.weightOfequipment
-    );
-    currentUser.resetUnswers();
-    currentUser.resetCurrentLabel();
-    ctx.reply("Подход успешно сохранен!");
+    await finishNewSetActon(ctx, currentUser, message);
   } // Порефакторить условие
 });
 
