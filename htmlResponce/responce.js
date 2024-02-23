@@ -8,15 +8,18 @@ class HtmlRecponce {
       return console.log("exerciseArray mast be an array, removeSetResponce");
     const exerciseArrayString = exerciseArray
       .map(
-        (ex) =>
-          `\nУпражнение :<b>${ex.exercise}</b>\nБыло выполнено подходов : ${ex.numberOfSet}\n`
+        (ex, ind) =>
+          `\nУпражнение №${ind + 1}:<b>${
+            ex.exercise
+          }</b>\nБыло выполнено подходов : ${ex.numberOfSet}\n`
       )
       .join("\n");
     const fullResponce = `
 Было выполнено:
     ${exerciseArrayString}
-Введите данные о подходе который нужно удалить,в формате : Упражнение :[название упражнения]\nПодход :[номер подхода числом]\n
-    `;
+Введите данные о подходе который нужно удалить,в формате : Номер упражнения: [Число]-Номер подхода :[число]\n
+    
+<b>Пример 2-3</b>`;
     this.ctx.replyWithHTML(fullResponce);
   }
 }
