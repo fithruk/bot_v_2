@@ -6,24 +6,21 @@ const removeExistingSetAction = async (ctx) => {
   const userName = checkUserNameFromCallbackQuery(ctx);
   const { currentUserSession } = await apiService.getCurrentTraining(userName);
   const removeResponce = new HtmlRecponce(ctx);
-  const exerciseArray = [...currentUserSession.exercises].sort(
-    (a, b) => b.numberOfSet - a.numberOfSet
-  );
+
+  const exerciseArray = [...currentUserSession.exercises];
 
   const uniqueExercises = exerciseArray.reduce(
-    (acc, next) => {
-      let exercise = acc.find((ex) => ex.exercise == next.exercise);
-      if (!exercise) {
-        return acc.concat(next);
-      }
-      if (exercise && exercise.numberOfSet < next.numberOfSet) {
-        return acc.concat(next);
-      }
-      return acc;
-    },
-    [exerciseArray[0]]
+    (acc, next) => ({ ...acc, [next.exercise]: [] }),
+    {}
   );
-  await removeResponce.removeSetResponce(uniqueExercises);
+
+  exerciseArray.forEach((exercise) => {
+    if (uniqueExercises[exercise.exercise]) {
+      uniqueExercises[exercise.exercise].push(exercise);
+    }
+  });
+
+  await removeResponce.removeSetResponce(Object.entries(uniqueExercises));
 };
 
 module.exports = { removeExistingSetAction };
