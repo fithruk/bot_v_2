@@ -1,4 +1,5 @@
 class User {
+  #exercises;
   constructor(userName, questionTitlesForNewSet) {
     this.userName = userName;
     this.currentLabel = 0;
@@ -11,7 +12,7 @@ class User {
       weightOfequipment: 0,
     };
     this.path = "";
-    // this.exercises = [];
+    this.#exercises = [];
   }
 
   updateCurrentLabel = () => {
@@ -44,6 +45,26 @@ class User {
 
   resetPath = () => {
     this.path = "";
+  };
+
+  setExercisesForForcedUpdateInDB = (exercisesArray) => {
+    if (!Array.isArray(exercisesArray))
+      return console.log("exercisesArray must be an array");
+    this.#exercises = this.#exercises.concat(exercisesArray);
+  };
+
+  getCurrentExercises = () => {
+    return this.#exercises;
+  };
+
+  exercisesForcedUpdate = (numOfExercise, numOfSet) => {
+    if (typeof numOfExercise != "number" || typeof numOfSet != "number")
+      return console.log("numOfExercise, numOfSet must be a number");
+
+    const currentExercises = this.getCurrentExercises();
+    const exersise = [...currentExercises[numOfExercise - 1][1]];
+    const set = exersise.find((ex) => ex.numberOfSet == numOfSet);
+    return set && set._id;
   };
 }
 

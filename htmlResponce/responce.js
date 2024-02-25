@@ -27,7 +27,7 @@ class HtmlRecponce {
 Введите данные о подходе который нужно удалить,в формате : Номер упражнения: [Число]-Номер подхода :[число]\n
     
 <b>Пример 2-3</b>`;
-    //this.ctx.replyWithHTML(fullResponce);
+    this.ctx.replyWithHTML(fullResponce);
   }
 }
 
