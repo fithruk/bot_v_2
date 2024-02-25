@@ -22,5 +22,9 @@ const removeExistingSetAction = async (ctx) => {
 
   await removeResponce.removeSetResponce(Object.entries(uniqueExercises));
 };
+//Here...
+const finishRemoveSetAction = async (ctx, message) => {
+  console.log(message);
+};
 
-module.exports = { removeExistingSetAction };
+module.exports = { removeExistingSetAction, finishRemoveSetAction };

@@ -50,7 +50,7 @@ const addNewSetAction = async (ctx) => {
   }
 };
 
-const finishNewSetActon = async (ctx, currentUser, message) => {
+const finishNewSetAction = async (ctx, currentUser, message) => {
   try {
     const callback = callbackCreator("weightOfequipment", +message);
     currentUser.updateUnswers(callback);
@@ -70,4 +70,4 @@ const finishNewSetActon = async (ctx, currentUser, message) => {
   }
 };
 
-module.exports = { addNewSetAction, finishNewSetActon };
+module.exports = { addNewSetAction, finishNewSetAction };

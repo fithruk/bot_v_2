@@ -11,6 +11,7 @@ class User {
       weightOfequipment: 0,
     };
     this.path = "";
+    // this.exercises = [];
   }
 
   updateCurrentLabel = () => {

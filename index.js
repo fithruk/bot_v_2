@@ -10,10 +10,11 @@ const {
 const userState = require("./userState/userState");
 const {
   addNewSetAction,
-  finishNewSetActon,
+  finishNewSetAction,
 } = require("./actions/addNewSetAction/addNewSetAction");
 const {
   removeExistingSetAction,
+  finishRemoveSetAction,
 } = require("./actions/removeExistingSetAction/removeExistingSetAction");
 const mongoose = require("mongoose");
 
@@ -64,6 +65,12 @@ bot.help((ctx) => {
   ctx.reply(comands);
 });
 
+// Тип функций приложения, типа ENUM
+const functionsEnum = {
+  createNewSet: buttonsLabelsForNewSetCommand[0],
+  removeExistSet: buttonsLabelsForNewSetCommand[1],
+};
+
 bot.action(new RegExp(), async (ctx) => {
   try {
     const username = checkUserNameFromCallbackQuery(ctx);
@@ -71,12 +78,6 @@ bot.action(new RegExp(), async (ctx) => {
     const currentUser = userState.findUser(username);
     currentUser.updatePath(typeOfAction); // Добавляет указание по какому пути должен идти скрипт
     const individualScriptPointer = currentUser.path.split("/")[0];
-
-    // Тип функций приложения, типа ENUM
-    const functionsEnum = {
-      createNewSet: buttonsLabelsForNewSetCommand[0],
-      removeExistSet: buttonsLabelsForNewSetCommand[1],
-    };
 
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
@@ -100,15 +101,26 @@ bot.on("message", async (ctx) => {
   const currentUser = userState.findUser(userName);
   const message = ctx.message.text;
   const isNanMessage = Number.isNaN(+message);
+  const individualScriptPointer = currentUser.path.split("/")[0];
 
-  if (
-    currentUser.answers.countOfReps &&
-    currentUser.answers.exersice &&
-    currentUser.answers.currentGroup
-  ) {
-    if (isNanMessage) return ctx.reply("Некорректные данные веса!");
-    await finishNewSetActon(ctx, currentUser, message);
-  } // Порефакторить условие
+  switch (individualScriptPointer) {
+    case functionsEnum.createNewSet:
+      if (
+        currentUser.answers.countOfReps &&
+        currentUser.answers.exersice &&
+        currentUser.answers.currentGroup
+      ) {
+        if (isNanMessage) return ctx.reply("Некорректные данные веса!");
+        await finishNewSetAction(ctx, currentUser, message);
+      } // Порефакторить условие
+      break;
+    case functionsEnum.removeExistSet:
+      await finishRemoveSetAction(ctx, message);
+      break;
+
+    default:
+      break;
+  }
 });
 
 bot.launch();
