@@ -65,6 +65,17 @@ class ApiService {
     );
     return data;
   }
+
+  async removeSet(userName, id) {
+    const { data } = await axios.patch(
+      `${process.env.API_ADRESS}/trainings/removeSet`,
+      {
+        userName,
+        id,
+      }
+    );
+    return data;
+  }
 }
 
 const apiService = new ApiService();

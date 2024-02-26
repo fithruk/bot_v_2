@@ -64,7 +64,8 @@ class User {
     const currentExercises = this.getCurrentExercises();
     const exersise = [...currentExercises[numOfExercise - 1][1]];
     const set = exersise.find((ex) => ex.numberOfSet == numOfSet);
-    return set && set._id;
+
+    return set && set._id.toString();
   };
 }
 

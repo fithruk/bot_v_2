@@ -29,15 +29,25 @@ const removeExistingSetAction = async (ctx) => {
 
   await removeResponce.removeSetResponce(Object.entries(uniqueExercises));
 };
-//Here...
+
 const finishRemoveSetAction = async (ctx, message) => {
   if (!message.includes("-")) return console.log("Wrong data");
   const userName = checkUserName(ctx);
   const currentUser = userState.findUser(userName);
   const [numOfExercise, numOfSet] = message.split("-");
 
-  const idOfSet = currentUser.exercisesForcedUpdate(+numOfExercise, +numOfSet);
-  // Here...
+  const id = currentUser.exercisesForcedUpdate(+numOfExercise, +numOfSet);
+  if (id) {
+    try {
+      await apiService.removeSet(userName, id);
+      currentUser.resetPath();
+    } catch (error) {
+      console.log("Error during removeExistingSetAction");
+      console.log(error.message);
+    }
+  } else {
+    ctx.reply("Нет такого подхода!");
+  }
 };
 
 module.exports = { removeExistingSetAction, finishRemoveSetAction };
