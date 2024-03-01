@@ -15,7 +15,7 @@ const addNewSetAction = async (ctx) => {
   let groupes,
     exersice,
     countOfReps = new Array(30).fill(1).map((_, ind) => (ind += 1));
-
+  // Сделать валидацию по отображению и обновлению кнопок
   switch (currentUser.label) {
     case questionTitlesForNewSet[0]:
       groupes = await apiService.getAllMusclesGroupes();

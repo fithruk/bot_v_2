@@ -6,10 +6,10 @@ class User {
     this.questionTitlesForNewSet = questionTitlesForNewSet;
     this.label = this.questionTitlesForNewSet[this.currentLabel];
     this.answers = {
-      currentGroup: "",
-      exersice: "",
-      countOfReps: 0,
-      weightOfequipment: 0,
+      currentGroup: null,
+      exersice: null,
+      countOfReps: null,
+      weightOfequipment: null,
     };
     this.path = "";
     this.#exercises = [];
@@ -32,10 +32,10 @@ class User {
 
   resetUnswers = () => {
     this.answers = {
-      currentGroup: "",
-      exersice: "",
-      countOfReps: 0,
-      weightOfequipment: 0,
+      currentGroup: null,
+      exersice: null,
+      countOfReps: null,
+      weightOfequipment: null,
     };
   };
 
