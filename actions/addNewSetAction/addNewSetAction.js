@@ -31,7 +31,7 @@ const addNewSetAction = async (ctx) => {
       groupes = await apiService.getAllMusclesGroupes();
       await markupReplier(ctx, currentUser.label, groupes, "currentGroup"); // Рефакторить
 
-      currentUser.updateCurrentLabel(true);
+      currentUser.updateCurrentLabel();
 
       break;
 
@@ -46,7 +46,7 @@ const addNewSetAction = async (ctx) => {
 
       await markupReplier(ctx, currentUser.label, exersice, "exersice");
 
-      currentUser.updateCurrentLabel(true);
+      currentUser.updateCurrentLabel();
       break;
 
     case questionTitlesForNewSet[2]:
@@ -55,7 +55,7 @@ const addNewSetAction = async (ctx) => {
         return abortUserData(currentUser);
 
       await markupReplier(ctx, currentUser.label, countOfReps, "countOfReps");
-      currentUser.updateCurrentLabel(true);
+      currentUser.updateCurrentLabel();
       break;
 
     case questionTitlesForNewSet[3]:
