@@ -78,7 +78,7 @@ bot.action(new RegExp(), async (ctx) => {
     const currentUser = userState.findUser(username);
     currentUser.updatePath(typeOfAction); // Добавляет указание по какому пути должен идти скрипт
     const individualScriptPointer = currentUser.path.split("/")[0];
-
+    console.log(individualScriptPointer);
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
         addNewSetAction(ctx);
@@ -102,7 +102,7 @@ bot.on("message", async (ctx) => {
   const message = ctx.message.text;
   const isNanMessage = Number.isNaN(+message);
   const individualScriptPointer = currentUser.path.split("/")[0];
-
+  console.log(individualScriptPointer);
   switch (individualScriptPointer) {
     case functionsEnum.createNewSet:
       if (
