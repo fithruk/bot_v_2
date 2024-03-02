@@ -82,9 +82,7 @@ const finishNewSetAction = async (ctx, currentUser, message) => {
       currentUser.answers.countOfReps,
       currentUser.answers.weightOfequipment
     );
-    currentUser.resetUnswers();
-    currentUser.resetCurrentLabel();
-    currentUser.resetPath();
+    abortUserAnswerData(currentUser);
     ctx.reply("Подход успешно сохранен!");
   } catch (error) {
     console.log("Error in bot.on'message', during finish exersice");
