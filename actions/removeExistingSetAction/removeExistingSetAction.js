@@ -4,13 +4,13 @@ const {
   checkUserName,
 } = require("../../helpers/helpers");
 const userState = require("../../userState/userState");
-const HtmlRecponce = require("../../htmlResponce/responce");
+const HtmlResponce = require("../../htmlResponce/responce");
 
 const removeExistingSetAction = async (ctx) => {
   const userName = checkUserNameFromCallbackQuery(ctx);
   const currentUser = userState.findUser(userName);
   const { currentUserSession } = await apiService.getCurrentTraining(userName);
-  const removeResponce = new HtmlRecponce(ctx);
+  const removeResponce = new HtmlResponce(ctx);
 
   const exerciseArray = [...currentUserSession.exercises];
 
@@ -28,6 +28,8 @@ const removeExistingSetAction = async (ctx) => {
   currentUser.setExercisesForForcedUpdateInDB(Object.entries(uniqueExercises));
 
   await removeResponce.removeSetResponce(Object.entries(uniqueExercises));
+
+  //currentUser.resetPath();
 };
 
 const finishRemoveSetAction = async (ctx, message) => {
@@ -37,6 +39,7 @@ const finishRemoveSetAction = async (ctx, message) => {
   const [numOfExercise, numOfSet] = message.split("-");
 
   const id = currentUser.exercisesForcedUpdate(+numOfExercise, +numOfSet);
+
   if (id) {
     try {
       await apiService.removeSet(userName, id);

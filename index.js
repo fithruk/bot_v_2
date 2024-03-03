@@ -47,7 +47,6 @@ bot.command("newTraining", async (ctx) => {
     await newTrainingCommand(ctx);
   } catch (error) {
     console.log("Error in 'bot.command'newTraining'");
-    console.log(error);
     console.log(error.message);
   }
 });
@@ -102,17 +101,15 @@ bot.on("message", async (ctx) => {
   const message = ctx.message.text;
   const isNanMessage = Number.isNaN(+message);
   const individualScriptPointer = currentUser.path.split("/")[0];
-  console.log(individualScriptPointer);
+
   switch (individualScriptPointer) {
     case functionsEnum.createNewSet:
-      if (
-        currentUser.answers.countOfReps &&
-        currentUser.answers.exersice &&
-        currentUser.answers.currentGroup
-      ) {
-        if (isNanMessage) return ctx.reply("Некорректные данные веса!");
+      if (Object.entries(currentUser.answers).every((answ) => answ != null)) {
+        if (isNanMessage)
+          return ctx.reply("Некорректные данные веса! Введите число!");
+
         await finishNewSetAction(ctx, currentUser, message);
-      } // Порефакторить условие
+      }
       break;
     case functionsEnum.removeExistSet:
       await finishRemoveSetAction(ctx, message);
@@ -124,3 +121,6 @@ bot.on("message", async (ctx) => {
 });
 
 bot.launch();
+// currentUser.answers.countOfReps &&
+// currentUser.answers.exersice &&
+// currentUser.answers.currentGroup

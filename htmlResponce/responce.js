@@ -1,4 +1,4 @@
-class HtmlRecponce {
+class HtmlResponce {
   constructor(context) {
     this.ctx = context;
   }
@@ -31,4 +31,4 @@ class HtmlRecponce {
   }
 }
 
-module.exports = HtmlRecponce;
+module.exports = HtmlResponce;

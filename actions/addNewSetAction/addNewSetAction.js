@@ -7,6 +7,12 @@ const {
 const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
 
+const abortUserAnswerData = (user) => {
+  user.resetPath();
+  user.resetUnswers();
+  user.resetCurrentLabel();
+};
+
 const addNewSetAction = async (ctx) => {
   const userName = checkUserNameFromCallbackQuery(ctx);
   const callbackQuery = ctx.callbackQuery.data;
@@ -16,16 +22,10 @@ const addNewSetAction = async (ctx) => {
     return userUnswers[key] != null ? true : false;
   };
 
-  const abortUserAnswerData = (user) => {
-    user.resetPath();
-    user.resetUnswers();
-    user.resetCurrentLabel();
-  };
-
   let groupes,
     exersice,
     countOfReps = new Array(30).fill(1).map((_, ind) => (ind += 1));
-  // Сделать валидацию по отображению и обновлению кнопок
+
   switch (currentUser.label) {
     case questionTitlesForNewSet[0]:
       groupes = await apiService.getAllMusclesGroupes();
@@ -52,7 +52,7 @@ const addNewSetAction = async (ctx) => {
     case questionTitlesForNewSet[2]:
       currentUser.updateUnswers(callbackQuery);
       if (!isApprovedCurrentLabel("exersice", currentUser.answers))
-        return abortUserData(currentUser);
+        return abortUserAnswerData(currentUser);
 
       await markupReplier(ctx, currentUser.label, countOfReps, "countOfReps");
       currentUser.updateCurrentLabel();
@@ -72,7 +72,7 @@ const addNewSetAction = async (ctx) => {
 };
 
 const finishNewSetAction = async (ctx, currentUser, message) => {
-  // Придумать как сбросить данные на последнем шаге
+  // Придумать как сбросить данные на последнем шаге, как нибудь потом
   try {
     const callback = callbackCreator("weightOfequipment", +message);
     currentUser.updateUnswers(callback);
