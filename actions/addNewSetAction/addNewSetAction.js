@@ -23,6 +23,7 @@ const addNewSetAction = async (ctx) => {
   };
 
   let groupes,
+    subGroup,
     exersice,
     countOfReps = new Array(30).fill(1).map((_, ind) => (ind += 1));
 
@@ -40,16 +41,30 @@ const addNewSetAction = async (ctx) => {
       if (!isApprovedCurrentLabel("currentGroup", currentUser.answers))
         return abortUserAnswerData(currentUser);
 
-      exersice = await apiService.getExercisesByGroupe(
+      subGroup = await apiService.getExercisesSubGroupe(
         currentUser.answers.currentGroup
       );
 
-      await markupReplier(ctx, currentUser.label, exersice, "exersice");
+      await markupReplier(ctx, currentUser.label, subGroup, "subGroup");
 
       currentUser.updateCurrentLabel();
       break;
 
     case questionTitlesForNewSet[2]:
+      currentUser.updateUnswers(callbackQuery);
+      if (!isApprovedCurrentLabel("subGroup", currentUser.answers))
+        return abortUserAnswerData(currentUser);
+
+      exersice = await apiService.getExercisesByGroupe(
+        currentUser.answers.subGroup
+      );
+      console.log(exersice + " exersice"); //
+      await markupReplier(ctx, currentUser.label, exersice, "exersice");
+
+      currentUser.updateCurrentLabel();
+      break;
+
+    case questionTitlesForNewSet[3]:
       currentUser.updateUnswers(callbackQuery);
       if (!isApprovedCurrentLabel("exersice", currentUser.answers))
         return abortUserAnswerData(currentUser);
@@ -58,7 +73,7 @@ const addNewSetAction = async (ctx) => {
       currentUser.updateCurrentLabel();
       break;
 
-    case questionTitlesForNewSet[3]:
+    case questionTitlesForNewSet[4]:
       currentUser.updateUnswers(callbackQuery);
       if (!isApprovedCurrentLabel("countOfReps", currentUser.answers))
         return abortUserAnswerData(currentUser);

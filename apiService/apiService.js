@@ -13,6 +13,17 @@ class ApiService {
     return data;
   }
 
+  async getExercisesSubGroupe(groupe) {
+    const { data } = await axios.post(
+      `${process.env.API_ADRESS}/exercise/subGroupe`,
+      {
+        groupe,
+      }
+    );
+
+    return data;
+  }
+
   async getExercisesByGroupe(groupe) {
     const { data } = await axios.post(`${process.env.API_ADRESS}/exercise`, {
       groupe,

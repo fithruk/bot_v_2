@@ -7,6 +7,7 @@ const buttonsLabelsForNewSetCommand = [
 
 const questionTitlesForNewSet = [
   "Выберите мышечную группу :",
+  "Выберите подгруппу :",
   "Выберите упражнение :",
   "Выберите количество повторений :",
   "Введите вес снаряда в цифрах :",
@@ -53,6 +54,8 @@ const markupReplier = async (
   keyForCallback
 ) => {
   // if (buttonsArray.length > 5) buttonsArray = sliseArray(buttonsArray);
+  console.log("buttonsArray");
+  console.log(buttonsArray); // --
   await ctx.replyWithHTML(
     titleQuestion,
     Markup.inlineKeyboard(

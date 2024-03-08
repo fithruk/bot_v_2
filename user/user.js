@@ -7,6 +7,7 @@ class User {
     this.label = this.questionTitlesForNewSet[this.currentLabel];
     this.answers = {
       currentGroup: null,
+      subGroup: null,
       exersice: null,
       countOfReps: null,
       weightOfequipment: null,
@@ -33,6 +34,7 @@ class User {
   resetUnswers = () => {
     this.answers = {
       currentGroup: null,
+      subGroup: null,
       exersice: null,
       countOfReps: null,
       weightOfequipment: null,
