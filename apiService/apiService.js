@@ -32,11 +32,11 @@ class ApiService {
     return data;
   }
 
-  async getApartExerciseFull(exercise, subDirectory) {
+  async getApartExerciseBySubGroup(currentGroup, subDirectory) {
     const { data } = await axios.post(
-      `${process.env.API_ADRESS}/exercise/apart`,
+      `${process.env.API_ADRESS}/exercise/bySubDirectory`,
       {
-        exercise,
+        currentGroup,
         subDirectory,
       }
     );

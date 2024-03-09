@@ -24,7 +24,8 @@ const addNewSetAction = async (ctx) => {
 
   let groupes,
     subGroup,
-    exersice,
+    exersicesBySubGroupe,
+    exercise,
     countOfReps = new Array(30).fill(1).map((_, ind) => (ind += 1));
 
   switch (currentUser.label) {
@@ -55,11 +56,17 @@ const addNewSetAction = async (ctx) => {
       if (!isApprovedCurrentLabel("subGroup", currentUser.answers))
         return abortUserAnswerData(currentUser);
 
-      exersice = await apiService.getExercisesByGroupe(
+      exersicesBySubGroupe = await apiService.getApartExerciseBySubGroup(
+        currentUser.answers.currentGroup,
         currentUser.answers.subGroup
       );
-      console.log(exersice + " exersice"); //
-      await markupReplier(ctx, currentUser.label, exersice, "exersice");
+
+      await markupReplier(
+        ctx,
+        currentUser.label,
+        exersicesBySubGroupe,
+        "exersice"
+      );
 
       currentUser.updateCurrentLabel();
       break;
@@ -98,6 +105,7 @@ const finishNewSetAction = async (ctx, currentUser, message) => {
       currentUser.answers.weightOfequipment
     );
     abortUserAnswerData(currentUser);
+
     ctx.reply("Подход успешно сохранен!");
   } catch (error) {
     console.log("Error in bot.on'message', during finish exersice");
