@@ -69,6 +69,21 @@ const markupReplier = async (
   );
 };
 
+const historyDestroyer = async (ctx, message_id) => {
+  let i = 0;
+
+  // const messageId = message_id;
+  // console.log(message_id + " message_id");
+  while (true) {
+    try {
+      await ctx.deleteMessage(message_id - i++);
+    } catch (e) {
+      console.log("break");
+      break;
+    }
+  }
+};
+
 module.exports = {
   checkUserName,
   markupReplier,
@@ -76,4 +91,5 @@ module.exports = {
   buttonsLabelsForNewSetCommand,
   questionTitlesForNewSet,
   callbackCreator,
+  historyDestroyer,
 };

@@ -3,6 +3,7 @@ const {
   checkUserNameFromCallbackQuery,
   questionTitlesForNewSet,
   callbackCreator,
+  historyDestroyer,
 } = require("../../helpers/helpers");
 const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
@@ -31,6 +32,7 @@ const addNewSetAction = async (ctx) => {
   switch (currentUser.label) {
     case questionTitlesForNewSet[0]:
       groupes = await apiService.getAllMusclesGroupes();
+      await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
       await markupReplier(ctx, currentUser.label, groupes, "currentGroup"); // Рефакторить
 
       currentUser.updateCurrentLabel();
@@ -46,6 +48,7 @@ const addNewSetAction = async (ctx) => {
         currentUser.answers.currentGroup
       );
 
+      await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
       await markupReplier(ctx, currentUser.label, subGroup, "subGroup");
 
       currentUser.updateCurrentLabel();
@@ -61,6 +64,7 @@ const addNewSetAction = async (ctx) => {
         currentUser.answers.subGroup
       );
 
+      await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
       await markupReplier(
         ctx,
         currentUser.label,
@@ -76,6 +80,7 @@ const addNewSetAction = async (ctx) => {
       if (!isApprovedCurrentLabel("exersice", currentUser.answers))
         return abortUserAnswerData(currentUser);
 
+      await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
       await markupReplier(ctx, currentUser.label, countOfReps, "countOfReps");
       currentUser.updateCurrentLabel();
       break;
@@ -85,6 +90,7 @@ const addNewSetAction = async (ctx) => {
       if (!isApprovedCurrentLabel("countOfReps", currentUser.answers))
         return abortUserAnswerData(currentUser);
 
+      await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
       await ctx.reply(currentUser.label);
       break;
 
