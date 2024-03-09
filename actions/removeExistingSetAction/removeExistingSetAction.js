@@ -28,8 +28,6 @@ const removeExistingSetAction = async (ctx) => {
   currentUser.setExercisesForForcedUpdateInDB(Object.entries(uniqueExercises));
 
   await removeResponce.removeSetResponce(Object.entries(uniqueExercises));
-
-  //currentUser.resetPath();
 };
 
 const finishRemoveSetAction = async (ctx, message) => {
@@ -44,6 +42,7 @@ const finishRemoveSetAction = async (ctx, message) => {
     try {
       await apiService.removeSet(userName, id);
       currentUser.resetPath();
+      ctx.reply("Подход успешно удален.");
     } catch (error) {
       console.log("Error during removeExistingSetAction");
       console.log(error.message);
