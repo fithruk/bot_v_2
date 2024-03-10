@@ -2,6 +2,7 @@ const { apiService } = require("../../apiService/apiService");
 const {
   checkUserNameFromCallbackQuery,
   checkUserName,
+  historyDestroyer,
 } = require("../../helpers/helpers");
 const userState = require("../../userState/userState");
 const HtmlResponce = require("../../htmlResponce/responce");
@@ -28,6 +29,7 @@ const removeExistingSetAction = async (ctx) => {
   currentUser.setExercisesForForcedUpdateInDB(Object.entries(uniqueExercises));
 
   await removeResponce.removeSetResponce(Object.entries(uniqueExercises));
+  await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
 };
 
 const finishRemoveSetAction = async (ctx, message) => {
@@ -42,6 +44,7 @@ const finishRemoveSetAction = async (ctx, message) => {
     try {
       await apiService.removeSet(userName, id);
       currentUser.resetPath();
+      await historyDestroyer(ctx, ctx.message.message_id);
       ctx.reply("Подход успешно удален.");
     } catch (error) {
       currentUser.resetPath();

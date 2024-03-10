@@ -37,10 +37,12 @@ const addNewSetAction = async (ctx) => {
     exercise,
     countOfReps = new Array(30).fill(1).map((_, ind) => (ind += 1));
 
+  await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
+
   switch (currentUser.label) {
     case questionTitlesForNewSet[0]:
       groupes = await apiService.getAllMusclesGroupes();
-      await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
+
       await markupReplier(
         ctx,
         currentUser.label,
@@ -65,8 +67,7 @@ const addNewSetAction = async (ctx) => {
       subGroup = await apiService.getExercisesSubGroupe(
         currentUser.answers.currentGroup
       );
-
-      await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
+      console.log(subGroup);
       await markupReplier(
         ctx,
         currentUser.label,
@@ -92,7 +93,6 @@ const addNewSetAction = async (ctx) => {
         currentUser.answers.subGroup
       );
 
-      await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
       await markupReplier(
         ctx,
         currentUser.label,
@@ -113,7 +113,6 @@ const addNewSetAction = async (ctx) => {
       )
         return abortUserAnswerData(currentUser);
 
-      await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
       await markupReplier(
         ctx,
         currentUser.label,
@@ -133,7 +132,6 @@ const addNewSetAction = async (ctx) => {
       )
         return abortUserAnswerData(currentUser);
 
-      await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
       await ctx.reply(currentUser.label);
       break;
 
