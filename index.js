@@ -90,7 +90,9 @@ bot.action(new RegExp(), async (ctx) => {
         break;
     }
   } catch (error) {
+    console.log(error.message);
     console.log("Error in bot.action(new RegExp()");
+    await ctx.reply("Unexpect error, try again...");
   }
 });
 
@@ -102,21 +104,25 @@ bot.on("message", async (ctx) => {
   const isNanMessage = Number.isNaN(+message);
   const individualScriptPointer = currentUser.path.split("/")[0];
 
-  switch (individualScriptPointer) {
-    case functionsEnum.createNewSet:
-      if (Object.entries(currentUser.answers).every((answ) => answ != null)) {
-        if (isNanMessage)
-          return ctx.reply("Некорректные данные веса! Введите число!");
+  try {
+    switch (individualScriptPointer) {
+      case functionsEnum.createNewSet:
+        if (Object.entries(currentUser.answers).every((answ) => answ != null)) {
+          if (isNanMessage)
+            return ctx.reply("Некорректные данные веса! Введите число!");
 
-        await finishNewSetAction(ctx, currentUser, message);
-      }
-      break;
-    case functionsEnum.removeExistSet:
-      await finishRemoveSetAction(ctx, message);
-      break;
+          await finishNewSetAction(ctx, currentUser, message);
+        }
+        break;
+      case functionsEnum.removeExistSet:
+        await finishRemoveSetAction(ctx, message);
+        break;
 
-    default:
-      break;
+      default:
+        break;
+    }
+  } catch (error) {
+    await ctx.reply("Unexpect error, try again...");
   }
 });
 
