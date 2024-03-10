@@ -4,6 +4,7 @@ const { User } = require("../user/user");
 const {
   checkUserName,
   questionTitlesForNewSet,
+  historyDestroyer,
 } = require("../helpers/helpers");
 
 const newTrainingCommand = async (ctx) => {
@@ -16,15 +17,15 @@ const newTrainingCommand = async (ctx) => {
   switch (responce.status) {
     case "succes":
       userState.viewStore();
-      //await historyDestroyer(ctx);
+      await historyDestroyer(ctx, ctx.message.message_id);
       return ctx.reply("Новая тренировка успешно создана");
 
     case "exist":
-      //await historyDestroyer(ctx);
+      await historyDestroyer(ctx, ctx.message.message_id);
       return ctx.reply("Актуальная тренировка еще не закончена");
 
     case "error":
-      //await historyDestroyer(ctx);
+      await historyDestroyer(ctx, ctx.message.message_id);
       return ctx.reply("error");
     default:
       return ctx.reply("unexpected error");

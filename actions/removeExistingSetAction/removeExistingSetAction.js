@@ -44,6 +44,7 @@ const finishRemoveSetAction = async (ctx, message) => {
       currentUser.resetPath();
       ctx.reply("Подход успешно удален.");
     } catch (error) {
+      currentUser.resetPath();
       console.log("Error during removeExistingSetAction");
       console.log(error.message);
     }

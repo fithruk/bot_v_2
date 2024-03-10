@@ -76,8 +76,10 @@ bot.action(new RegExp(), async (ctx) => {
     const typeOfAction = ctx.callbackQuery.data.split("=")[1];
     const currentUser = userState.findUser(username);
     currentUser.updatePath(typeOfAction); // Добавляет указание по какому пути должен идти скрипт
-    const individualScriptPointer = currentUser.path.split("/")[0];
-    console.log(individualScriptPointer);
+    const individualScriptPointer = currentUser.path.split("/")[1]
+      ? currentUser.path.split("/")[1]
+      : currentUser.path.split("/")[0];
+
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
         addNewSetAction(ctx);

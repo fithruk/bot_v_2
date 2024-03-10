@@ -2,6 +2,7 @@ const {
   checkUserName,
   markupReplier,
   buttonsLabelsForNewSetCommand,
+  historyDestroyer,
 } = require("../helpers/helpers");
 
 const { apiService } = require("../apiService/apiService");
@@ -15,6 +16,8 @@ const newSetCommand = async (ctx) => {
     if (!status) return ctx.reply("У вас нет активной тренировки");
 
     // Надо порефакторить
+
+    await historyDestroyer(ctx, ctx.message.message_id);
     await markupReplier(
       ctx,
       "Выберите функцию :",
