@@ -14,6 +14,14 @@ const abortUserAnswerData = (user) => {
   user.resetCurrentLabel();
 };
 
+const userAnswerKeysEnum = {
+  currentGroup: "currentGroup",
+  subGroup: "subGroup",
+  exersice: "exersice",
+  countOfReps: "countOfReps",
+  weightOfequipment: "weightOfequipment",
+};
+
 const addNewSetAction = async (ctx) => {
   const userName = checkUserNameFromCallbackQuery(ctx);
   const callbackQuery = ctx.callbackQuery.data;
@@ -33,7 +41,12 @@ const addNewSetAction = async (ctx) => {
     case questionTitlesForNewSet[0]:
       groupes = await apiService.getAllMusclesGroupes();
       await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
-      await markupReplier(ctx, currentUser.label, groupes, "currentGroup"); // Рефакторить
+      await markupReplier(
+        ctx,
+        currentUser.label,
+        groupes,
+        userAnswerKeysEnum.currentGroup
+      ); // Рефакторить
 
       currentUser.updateCurrentLabel();
 
@@ -41,7 +54,12 @@ const addNewSetAction = async (ctx) => {
 
     case questionTitlesForNewSet[1]:
       currentUser.updateUnswers(callbackQuery);
-      if (!isApprovedCurrentLabel("currentGroup", currentUser.answers))
+      if (
+        !isApprovedCurrentLabel(
+          userAnswerKeysEnum.currentGroup,
+          currentUser.answers
+        )
+      )
         return abortUserAnswerData(currentUser);
 
       subGroup = await apiService.getExercisesSubGroupe(
@@ -49,14 +67,24 @@ const addNewSetAction = async (ctx) => {
       );
 
       await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
-      await markupReplier(ctx, currentUser.label, subGroup, "subGroup");
+      await markupReplier(
+        ctx,
+        currentUser.label,
+        subGroup,
+        userAnswerKeysEnum.subGroup
+      );
 
       currentUser.updateCurrentLabel();
       break;
 
     case questionTitlesForNewSet[2]:
       currentUser.updateUnswers(callbackQuery);
-      if (!isApprovedCurrentLabel("subGroup", currentUser.answers))
+      if (
+        !isApprovedCurrentLabel(
+          userAnswerKeysEnum.subGroup,
+          currentUser.answers
+        )
+      )
         return abortUserAnswerData(currentUser);
 
       exersicesBySubGroupe = await apiService.getApartExerciseBySubGroup(
@@ -69,7 +97,7 @@ const addNewSetAction = async (ctx) => {
         ctx,
         currentUser.label,
         exersicesBySubGroupe,
-        "exersice"
+        userAnswerKeysEnum.exersice
       );
 
       currentUser.updateCurrentLabel();
@@ -77,17 +105,32 @@ const addNewSetAction = async (ctx) => {
 
     case questionTitlesForNewSet[3]:
       currentUser.updateUnswers(callbackQuery);
-      if (!isApprovedCurrentLabel("exersice", currentUser.answers))
+      if (
+        !isApprovedCurrentLabel(
+          userAnswerKeysEnum.exersice,
+          currentUser.answers
+        )
+      )
         return abortUserAnswerData(currentUser);
 
       await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
-      await markupReplier(ctx, currentUser.label, countOfReps, "countOfReps");
+      await markupReplier(
+        ctx,
+        currentUser.label,
+        countOfReps,
+        userAnswerKeysEnum.countOfReps
+      );
       currentUser.updateCurrentLabel();
       break;
 
     case questionTitlesForNewSet[4]:
       currentUser.updateUnswers(callbackQuery);
-      if (!isApprovedCurrentLabel("countOfReps", currentUser.answers))
+      if (
+        !isApprovedCurrentLabel(
+          userAnswerKeysEnum.countOfReps,
+          currentUser.answers
+        )
+      )
         return abortUserAnswerData(currentUser);
 
       await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
@@ -102,7 +145,10 @@ const addNewSetAction = async (ctx) => {
 const finishNewSetAction = async (ctx, currentUser, message) => {
   // Придумать как сбросить данные на последнем шаге, как нибудь потом
   try {
-    const callback = callbackCreator("weightOfequipment", +message);
+    const callback = callbackCreator(
+      userAnswerKeysEnum.weightOfequipment,
+      +message
+    );
     currentUser.updateUnswers(callback);
     await apiService.updateTrainingPerfomance(
       currentUser.userName,

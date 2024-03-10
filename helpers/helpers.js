@@ -54,8 +54,7 @@ const markupReplier = async (
   keyForCallback
 ) => {
   // if (buttonsArray.length > 5) buttonsArray = sliseArray(buttonsArray);
-  console.log("buttonsArray");
-  console.log(buttonsArray); // --
+
   await ctx.replyWithHTML(
     titleQuestion,
     Markup.inlineKeyboard(
@@ -71,14 +70,10 @@ const markupReplier = async (
 
 const historyDestroyer = async (ctx, message_id) => {
   let i = 0;
-
-  // const messageId = message_id;
-  // console.log(message_id + " message_id");
   while (true) {
     try {
       await ctx.deleteMessage(message_id - i++);
     } catch (e) {
-      console.log("break");
       break;
     }
   }

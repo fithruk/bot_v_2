@@ -28,6 +28,8 @@ class User {
 
   updateUnswers = (callbackQuery) => {
     const [key, value] = callbackQuery.split("=");
+    if (key === "exersice")
+      return (this.answers.exersice = `${this.answers.currentGroup} - ${this.answers.subGroup} - ${value}`);
     this.answers = { ...this.answers, [key]: value };
   };
 
