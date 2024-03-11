@@ -127,6 +127,3 @@ bot.on("message", async (ctx) => {
 });
 
 bot.launch();
-// currentUser.answers.countOfReps &&
-// currentUser.answers.exersice &&
-// currentUser.answers.currentGroup
