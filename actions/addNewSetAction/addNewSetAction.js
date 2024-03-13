@@ -155,7 +155,7 @@ const finishNewSetAction = async (ctx, currentUser, message) => {
       currentUser.answers.weightOfequipment
     );
     abortUserAnswerData(currentUser);
-
+    await historyDestroyer(ctx, ctx.message.message_id);
     ctx.reply("Подход успешно сохранен!");
   } catch (error) {
     console.log("Error in bot.on'message', during finish exersice");
