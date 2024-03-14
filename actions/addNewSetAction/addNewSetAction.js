@@ -67,7 +67,7 @@ const addNewSetAction = async (ctx) => {
       subGroup = await apiService.getExercisesSubGroupe(
         currentUser.answers.currentGroup
       );
-      console.log(subGroup);
+
       await markupReplier(
         ctx,
         currentUser.label,
