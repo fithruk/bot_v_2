@@ -87,6 +87,29 @@ class ApiService {
     );
     return data;
   }
+
+  async findUser(userName) {
+    const { data } = await axios.post(
+      `${process.env.API_ADRESS}/registration/getUser`,
+      {
+        userName,
+      }
+    );
+    return data;
+  }
+
+  async createUser(userName, firstName, lastName, userTall) {
+    const { data } = await axios.post(
+      `${process.env.API_ADRESS}/registration/createNewUser`,
+      {
+        userName,
+        firstName,
+        lastName,
+        userTall,
+      }
+    );
+    return data;
+  }
 }
 
 const apiService = new ApiService();

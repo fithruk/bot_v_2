@@ -1,4 +1,5 @@
 const { Telegraf, Markup } = require("telegraf");
+const { registrationOfNewUserComand } = require("./commands/registration");
 const { newTrainingCommand } = require("./commands/newTraining");
 const { newSetCommand } = require("./commands/newSet");
 const {
@@ -35,7 +36,8 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start(async (ctx) => {
   try {
-    ctx.reply("Jopa");
+    await registrationOfNewUserComand(ctx);
+    await ctx.reply("Jopa");
   } catch (error) {
     console.log("error in start");
     console.log(error.message);
