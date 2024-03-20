@@ -122,7 +122,7 @@ bot.on("message", async (ctx) => {
         break;
     }
   } catch (error) {
-    await ctx.reply("Unexpect error, try again...");
+    await ctx.reply("Unexpected error, try again...");
   }
 });
 
