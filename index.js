@@ -36,8 +36,8 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start(async (ctx) => {
   try {
-    await registrationOfNewUserComand(ctx);
-    await ctx.reply("Jopa");
+    const response = await registrationOfNewUserComand(ctx);
+    await ctx.reply(response);
   } catch (error) {
     console.log("error in start");
     console.log(error.message);
