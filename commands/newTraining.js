@@ -10,22 +10,24 @@ const {
 const newTrainingCommand = async (ctx) => {
   const userName = checkUserName(ctx);
 
-  const newUser = new User(userName, questionTitlesForNewSet);
+  const { isExist } = await apiService.findUser(userName);
+  if (!isExist)
+    return ctx.reply("Необходима регистрация, выполните команду '/start'");
+  // const newUser = new User(userName, questionTitlesForNewSet);
 
-  userState.addNewUser(newUser);
+  // userState.addNewUser(newUser);
   const responce = await apiService.initialNewTraining(userName);
   switch (responce.status) {
     case "succes":
-      userState.viewStore();
-      await historyDestroyer(ctx, ctx.message.message_id);
+      await historyDestroyer(ctx);
       return ctx.reply("Новая тренировка успешно создана");
 
     case "exist":
-      await historyDestroyer(ctx, ctx.message.message_id);
+      await historyDestroyer(ctx);
       return ctx.reply("Актуальная тренировка еще не закончена");
 
     case "error":
-      await historyDestroyer(ctx, ctx.message.message_id);
+      await historyDestroyer(ctx);
       return ctx.reply("error");
     default:
       return ctx.reply("unexpected error");

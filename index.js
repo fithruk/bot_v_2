@@ -1,12 +1,14 @@
 const { Telegraf, Markup } = require("telegraf");
-const { registrationOfNewUserComand } = require("./commands/registration");
 const { newTrainingCommand } = require("./commands/newTraining");
 const { newSetCommand } = require("./commands/newSet");
+const { startCommand } = require("./commands/start");
 const {
   markupReplier,
   buttonsLabelsForNewSetCommand,
   checkUserName,
   checkUserNameFromCallbackQuery,
+  startOptions,
+  historyDestroyer,
 } = require("./helpers/helpers");
 const userState = require("./userState/userState");
 const {
@@ -17,6 +19,11 @@ const {
   removeExistingSetAction,
   finishRemoveSetAction,
 } = require("./actions/removeExistingSetAction/removeExistingSetAction");
+
+const {
+  createNewUserAction,
+  finishNewUserRegistration,
+} = require("./actions/createNewUserAction/createNewUserAction");
 const mongoose = require("mongoose");
 
 require("dotenv").config();
@@ -36,8 +43,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start(async (ctx) => {
   try {
-    const response = await registrationOfNewUserComand(ctx);
-    await ctx.reply(response);
+    await startCommand(ctx);
   } catch (error) {
     console.log("error in start");
     console.log(error.message);
@@ -50,6 +56,7 @@ bot.command("newTraining", async (ctx) => {
   } catch (error) {
     console.log("Error in 'bot.command'newTraining'");
     console.log(error.message);
+    console.log(error);
   }
 });
 
@@ -70,11 +77,14 @@ bot.help((ctx) => {
 const functionsEnum = {
   createNewSet: buttonsLabelsForNewSetCommand[0],
   removeExistSet: buttonsLabelsForNewSetCommand[1],
+  createNewUser: startOptions[0],
 };
 
 bot.action(new RegExp(), async (ctx) => {
   try {
+    await historyDestroyer(ctx);
     const username = checkUserNameFromCallbackQuery(ctx);
+
     const typeOfAction = ctx.callbackQuery.data.split("=")[1];
     const currentUser = userState.findUser(username);
     currentUser.updatePath(typeOfAction); // Добавляет указание по какому пути должен идти скрипт
@@ -86,6 +96,9 @@ bot.action(new RegExp(), async (ctx) => {
         break;
       case functionsEnum.removeExistSet:
         removeExistingSetAction(ctx);
+        break;
+      case functionsEnum.createNewUser:
+        createNewUserAction(ctx);
         break;
 
       default:
@@ -105,7 +118,7 @@ bot.on("message", async (ctx) => {
   const message = ctx.message.text;
   const isNanMessage = Number.isNaN(+message);
   const individualScriptPointer = currentUser.path.split("/")[0];
-
+  console.log(message);
   try {
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
@@ -120,6 +133,9 @@ bot.on("message", async (ctx) => {
         await finishRemoveSetAction(ctx, message);
         break;
 
+      case functionsEnum.createNewUser:
+        finishNewUserRegistration(ctx);
+        break;
       default:
         break;
     }

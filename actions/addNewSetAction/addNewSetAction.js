@@ -37,7 +37,7 @@ const addNewSetAction = async (ctx) => {
     exercise,
     countOfReps = new Array(30).fill(1).map((_, ind) => (ind += 1));
 
-  await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
+  await historyDestroyer(ctx);
 
   switch (currentUser.label) {
     case questionTitlesForNewSet[0]:
@@ -155,7 +155,7 @@ const finishNewSetAction = async (ctx, currentUser, message) => {
       currentUser.answers.weightOfequipment
     );
     abortUserAnswerData(currentUser);
-    await historyDestroyer(ctx, ctx.message.message_id);
+    await historyDestroyer(ctx);
     ctx.reply("Подход успешно сохранен!");
   } catch (error) {
     console.log("Error in bot.on'message', during finish exersice");

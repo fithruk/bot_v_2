@@ -1,5 +1,11 @@
 const { Markup } = require("telegraf");
 
+const startOptions = [
+  "Создать новый профиль",
+  "Что-то еще оченгь нужное",
+  "Не менее нужное",
+];
+
 const buttonsLabelsForNewSetCommand = [
   "Добавить новый подход",
   "Удалить созданный подход",
@@ -68,11 +74,14 @@ const markupReplier = async (
   );
 };
 
-const historyDestroyer = async (ctx, message_id) => {
+const historyDestroyer = async (ctx) => {
+  const messageId = ctx.callbackQuery
+    ? ctx.callbackQuery.message.message_id
+    : ctx.message.message_id;
   let i = 0;
   while (true) {
     try {
-      await ctx.deleteMessage(message_id - i++);
+      await ctx.deleteMessage(messageId - i++);
     } catch (e) {
       break;
     }
@@ -87,4 +96,5 @@ module.exports = {
   questionTitlesForNewSet,
   callbackCreator,
   historyDestroyer,
+  startOptions,
 };

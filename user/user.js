@@ -1,5 +1,6 @@
 class User {
   #exercises;
+
   constructor(userName, questionTitlesForNewSet) {
     this.userName = userName;
     this.currentLabel = 0;
