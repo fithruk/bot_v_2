@@ -36,9 +36,10 @@ class User {
   };
 
   resetUnswers = () => {
-    this.answers = Object.entries(this.answers)
-      .map((field) => ({ [field[0]]: null }))
-      .reduce((acc, field) => ({ ...acc, ...field }), {});
+    this.answers = Object.entries(this.answers).reduce(
+      (acc, field) => ({ ...acc, [field[0]]: null }),
+      {}
+    );
   };
 
   setUnswers = (answers) => {
