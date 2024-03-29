@@ -29,7 +29,7 @@ const createNewUserAction = async (ctx) => {
 const finishNewUserRegistration = async (ctx, message) => {
   const userName = checkUserName(ctx);
   const currentUser = userState.findUser(userName);
-  console.log(message);
+  console.log(currentUser.answers);
   switch (currentUser.label) {
     case registrationQuestions[0]:
       await ctx.reply(currentUser.label);

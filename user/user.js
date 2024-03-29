@@ -41,6 +41,10 @@ class User {
       .reduce((acc, field) => ({ ...acc, ...field }), {});
   };
 
+  setUnswers = (answers) => {
+    this.answers = answers;
+  };
+
   updatePath = (partOfPath) => {
     this.path += `${partOfPath}/`;
   };
