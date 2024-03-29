@@ -1,29 +1,51 @@
 const {
   checkUserName,
   checkUserNameFromCallbackQuery,
+  registrationQuestions,
 } = require("../../helpers/helpers");
 const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
 
-const registrationQuestions = [
-  "Введите имя ",
-  "Введите фамилию ",
-  "Введите рост",
-];
 //Here...
 const createNewUserAction = async (ctx) => {
   const userName = checkUserNameFromCallbackQuery(ctx);
-  //userState.viewStore();
+  const currentUser = userState.findUser(userName);
+  switch (currentUser.label) {
+    case registrationQuestions[0]:
+      await ctx.reply(currentUser.label);
 
+      break;
+
+    default:
+      break;
+  }
   try {
   } catch (error) {
     console.log("error in registrationOfNewUserComand");
     console.log(error.message);
   }
 };
+//Here...
+const finishNewUserRegistration = async (ctx, message) => {
+  const userName = checkUserName(ctx);
+  const currentUser = userState.findUser(userName);
+  console.log(message);
+  switch (currentUser.label) {
+    case registrationQuestions[0]:
+      await ctx.reply(currentUser.label);
+      break;
+    case registrationQuestions[1]:
+      await ctx.reply(currentUser.label);
+      break;
 
-const finishNewUserRegistration = (ctx) => {
-  console.log(ctx.state);
+    default:
+      break;
+  }
+  try {
+  } catch (error) {
+    console.log("error in registrationOfNewUserComand");
+    console.log(error.message);
+  }
 };
 
 module.exports = { createNewUserAction, finishNewUserRegistration };

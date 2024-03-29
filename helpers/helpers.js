@@ -2,7 +2,7 @@ const { Markup } = require("telegraf");
 
 const startOptions = [
   "Создать новый профиль",
-  "Что-то еще оченгь нужное",
+  "Что-то еще очень нужное",
   "Не менее нужное",
 ];
 
@@ -17,6 +17,12 @@ const questionTitlesForNewSet = [
   "Выберите упражнение :",
   "Выберите количество повторений :",
   "Введите вес снаряда в цифрах :",
+];
+
+const registrationQuestions = [
+  "Введите имя и фамилию :",
+  "Ведите адрес электорнной почты :",
+  "Ведите номер телефона в формате +380XXXXXXXX:",
 ];
 
 const checkUserName = (ctx) => {
@@ -97,4 +103,5 @@ module.exports = {
   callbackCreator,
   historyDestroyer,
   startOptions,
+  registrationQuestions,
 };

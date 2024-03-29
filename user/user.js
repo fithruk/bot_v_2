@@ -1,11 +1,11 @@
 class User {
   #exercises;
 
-  constructor(userName, questionTitlesForNewSet) {
+  constructor(userName, questionTitles) {
     this.userName = userName;
     this.currentLabel = 0;
-    this.questionTitlesForNewSet = questionTitlesForNewSet;
-    this.label = this.questionTitlesForNewSet[this.currentLabel];
+    this.questionTitles = questionTitles;
+    this.label = this.questionTitles[this.currentLabel];
     this.answers = {
       currentGroup: null,
       subGroup: null,
@@ -19,29 +19,26 @@ class User {
 
   updateCurrentLabel = () => {
     this.currentLabel += 1;
-    this.label = this.questionTitlesForNewSet[this.currentLabel];
+    this.label = this.questionTitles[this.currentLabel];
   };
 
   resetCurrentLabel = () => {
     this.currentLabel = 0;
-    this.label = this.questionTitlesForNewSet[this.currentLabel];
+    this.label = this.questionTitles[this.currentLabel];
   };
 
   updateUnswers = (callbackQuery) => {
     const [key, value] = callbackQuery.split("=");
     if (key === "exersice")
       return (this.answers.exersice = `${this.answers.currentGroup} - ${this.answers.subGroup} - ${value}`);
+    if (key == "typeOfAction") return;
     this.answers = { ...this.answers, [key]: value };
   };
 
   resetUnswers = () => {
-    this.answers = {
-      currentGroup: null,
-      subGroup: null,
-      exersice: null,
-      countOfReps: null,
-      weightOfequipment: null,
-    };
+    this.answers = Object.entries(this.answers)
+      .map((field) => ({ [field[0]]: null }))
+      .reduce((acc, field) => ({ ...acc, ...field }), {});
   };
 
   updatePath = (partOfPath) => {

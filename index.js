@@ -118,7 +118,7 @@ bot.on("message", async (ctx) => {
   const message = ctx.message.text;
   const isNanMessage = Number.isNaN(+message);
   const individualScriptPointer = currentUser.path.split("/")[0];
-  console.log(message);
+
   try {
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
@@ -134,12 +134,13 @@ bot.on("message", async (ctx) => {
         break;
 
       case functionsEnum.createNewUser:
-        finishNewUserRegistration(ctx);
+        await finishNewUserRegistration(ctx, message);
         break;
       default:
         break;
     }
   } catch (error) {
+    console.log(error);
     await ctx.reply("Unexpected error, try again...");
   }
 });
