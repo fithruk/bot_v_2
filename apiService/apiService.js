@@ -98,14 +98,17 @@ class ApiService {
     return data;
   }
 
-  async createUser(userName, firstName, lastName, userTall) {
+  async createUser(userName, answers) {
+    const { name, email, phone } = answers;
+    const [firstName, lastName] = name.split(" ");
     const { data } = await axios.post(
       `${process.env.API_ADRESS}/registration/createNewUser`,
       {
         userName,
         firstName,
         lastName,
-        userTall,
+        email,
+        phone,
       }
     );
     return data;

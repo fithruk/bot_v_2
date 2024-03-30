@@ -7,6 +7,7 @@ const {
 } = require("../../helpers/helpers");
 const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
+const { User } = require("../../user/user");
 
 const createNewUserAction = async (ctx) => {
   const userName = checkUserNameFromCallbackQuery(ctx);
@@ -48,7 +49,7 @@ function validateEmail(email) {
 }
 
 function validatePhoneNumber(phoneNumber) {
-  const re = /^\+380\d{9}$/;
+  const re = /^380\d{9}$/;
   return re.test(phoneNumber);
 }
 
@@ -87,11 +88,15 @@ const finishNewUserRegistration = async (ctx, message) => {
         );
       }
       saveUserRegStepToStore(regAnswerKeysEnam, currentUser, message);
-      console.log(currentUser.answers);
+
+      const response = await apiService.createUser(
+        userName,
+        currentUser.answers
+      );
       currentUser.resetCurrentLabel();
       currentUser.resetPath();
       currentUser.resetUnswers();
-      await ctx.reply("Jopa");
+      await ctx.reply(response);
       break;
 
     default:

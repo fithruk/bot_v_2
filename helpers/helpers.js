@@ -22,7 +22,7 @@ const questionTitlesForNewSet = [
 const registrationQuestions = [
   "Введите имя и фамилию :",
   "Ведите адрес электорнной почты :",
-  "Ведите номер телефона в формате +380XXXXXXXX:",
+  "Ведите номер телефона в формате 380XXXXXXXX:",
 ];
 
 const checkUserName = (ctx) => {
