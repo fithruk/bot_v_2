@@ -59,8 +59,16 @@ const finishNewUserRegistration = async (ctx, message) => {
 
   switch (currentUser.label) {
     case registrationQuestions[0]:
-      if (message.split(" ").length != 2)
+      const [firstName, lastName] = message.split(" ");
+      console.log(isNaN(+firstName));
+      if (!firstName || !lastName)
         return ctx.reply("Введите имя и фамилию в два слова!");
+      if (!isNaN(+firstName) || !isNaN(+lastName)) {
+        return ctx.reply(
+          "Введите имя и фамилию буквами, только если вы не r2-d2)"
+        );
+      }
+
       saveUserRegStepToStore(regAnswerKeysEnam, currentUser, message);
       await ctx.reply(currentUser.label);
       break;
@@ -80,6 +88,9 @@ const finishNewUserRegistration = async (ctx, message) => {
       }
       saveUserRegStepToStore(regAnswerKeysEnam, currentUser, message);
       console.log(currentUser.answers);
+      currentUser.resetCurrentLabel();
+      currentUser.resetPath();
+      currentUser.resetUnswers();
       await ctx.reply("Jopa");
       break;
 
