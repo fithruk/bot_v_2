@@ -3,7 +3,7 @@ const { questionTitlesForNewSet } = require("../helpers/helpers");
 
 class UserState {
   constructor() {
-    this.userStore = [new User("Death_rowww", questionTitlesForNewSet)];
+    this.userStore = [];
   } // Костыль!!!!
 
   viewStore = () => {

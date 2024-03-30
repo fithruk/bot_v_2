@@ -20,9 +20,6 @@ const startCommand = async (ctx) => {
       ? userState.addNewUser(new User(userName, questionTitlesForNewSet))
       : userState.addNewUser(new User(userName, registrationQuestions));
 
-    if (isExist)
-      return ctx.reply(`Юзер никнеймом ${userName.split("-")[0]} уже создан`);
-
     const currentUser = userState.findUser(userName);
     currentUser.setUnswers(regAnswers);
     await markupReplier(ctx, "Выберите опцию :", startOptions, "typeOfAction");

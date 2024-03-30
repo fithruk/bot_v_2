@@ -9,9 +9,23 @@ const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
 const { User } = require("../../user/user");
 
+const regAnswers = { name: null, email: null, phone: null };
+
 const createNewUserAction = async (ctx) => {
   const userName = checkUserNameFromCallbackQuery(ctx);
+
+  //
+
+  const { isExist } = await apiService.findUser(userName);
+
+  if (isExist)
+    return ctx.reply(`Юзер никнеймом ${userName.split("-")[0]} уже создан`);
+
   const currentUser = userState.findUser(userName);
+  currentUser.setUnswers(regAnswers);
+
+  //
+  // const currentUser = userState.findUser(userName);
   switch (currentUser.label) {
     case registrationQuestions[0]:
       await ctx.reply(currentUser.label);
@@ -84,7 +98,7 @@ const finishNewUserRegistration = async (ctx, message) => {
     case registrationQuestions[2]:
       if (!validatePhoneNumber(message)) {
         return ctx.reply(
-          "Введите валидный номер телефона в указанном формате!"
+          "Введите валидный номер телефона в указанном формате: 380XXXXXXXX"
         );
       }
       saveUserRegStepToStore(regAnswerKeysEnam, currentUser, message);
