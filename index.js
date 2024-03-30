@@ -89,7 +89,7 @@ bot.action(new RegExp(), async (ctx) => {
     const currentUser = userState.findUser(username);
     currentUser.updatePath(typeOfAction); // Добавляет указание по какому пути должен идти скрипт
     const individualScriptPointer = currentUser.path.split("/")[0];
-
+    console.log(individualScriptPointer);
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
         addNewSetAction(ctx);

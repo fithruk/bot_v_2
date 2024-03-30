@@ -13,18 +13,17 @@ const regAnswers = { name: null, email: null, phone: null };
 
 const createNewUserAction = async (ctx) => {
   const userName = checkUserNameFromCallbackQuery(ctx);
-
-  //
+  const currentUser = userState.findUser(userName);
 
   const { isExist } = await apiService.findUser(userName);
 
-  if (isExist)
+  if (isExist) {
+    currentUser.resetPath();
     return ctx.reply(`Юзер никнеймом ${userName.split("-")[0]} уже создан`);
+  }
 
-  const currentUser = userState.findUser(userName);
   currentUser.setUnswers(regAnswers);
 
-  //
   // const currentUser = userState.findUser(userName);
   switch (currentUser.label) {
     case registrationQuestions[0]:
