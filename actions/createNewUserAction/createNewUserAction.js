@@ -4,6 +4,8 @@ const {
   registrationQuestions,
   callbackCreator,
   historyDestroyer,
+  questionTitlesForNewSet,
+  answersForNewSet,
 } = require("../../helpers/helpers");
 const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
@@ -74,7 +76,6 @@ const finishNewUserRegistration = async (ctx, message) => {
   switch (currentUser.label) {
     case registrationQuestions[0]:
       const [firstName, lastName] = message.split(" ");
-      console.log(isNaN(+firstName));
       if (!firstName || !lastName)
         return ctx.reply("Введите имя и фамилию в два слова!");
       if (!isNaN(+firstName) || !isNaN(+lastName)) {
@@ -109,6 +110,9 @@ const finishNewUserRegistration = async (ctx, message) => {
       currentUser.resetCurrentLabel();
       currentUser.resetPath();
       currentUser.resetUnswers();
+      currentUser.setQuestions(questionTitlesForNewSet);
+      currentUser.setUnswers(answersForNewSet);
+      currentUser.resetCurrentLabel();
       await ctx.reply(response);
       break;
 

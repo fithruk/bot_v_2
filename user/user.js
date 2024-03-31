@@ -1,3 +1,5 @@
+const { answersForNewSet } = require("../helpers/helpers");
+
 class User {
   #exercises;
 
@@ -6,13 +8,7 @@ class User {
     this.currentLabel = 0;
     this.questionTitles = questionTitles;
     this.label = this.questionTitles[this.currentLabel];
-    this.answers = {
-      currentGroup: null,
-      subGroup: null,
-      exersice: null,
-      countOfReps: null,
-      weightOfequipment: null,
-    };
+    this.answers = answersForNewSet;
     this.path = "";
     this.#exercises = [];
   }
@@ -44,6 +40,10 @@ class User {
 
   setUnswers = (answers) => {
     this.answers = answers;
+  };
+
+  setQuestions = (questionTitles) => {
+    this.questionTitles = questionTitles;
   };
 
   updatePath = (partOfPath) => {

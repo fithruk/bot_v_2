@@ -25,6 +25,14 @@ const registrationQuestions = [
   "Ведите номер телефона в формате 380XXXXXXXX:",
 ];
 
+const answersForNewSet = {
+  currentGroup: null,
+  subGroup: null,
+  exersice: null,
+  countOfReps: null,
+  weightOfequipment: null,
+};
+
 const checkUserName = (ctx) => {
   return ctx.message.from.username
     ? ctx.message.from.username
@@ -85,6 +93,7 @@ const historyDestroyer = async (ctx) => {
     ? ctx.callbackQuery.message.message_id
     : ctx.message.message_id;
   let i = 0;
+
   while (true) {
     try {
       await ctx.deleteMessage(messageId - i++);
@@ -104,4 +113,5 @@ module.exports = {
   historyDestroyer,
   startOptions,
   registrationQuestions,
+  answersForNewSet,
 };
