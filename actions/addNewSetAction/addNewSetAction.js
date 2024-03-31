@@ -26,7 +26,7 @@ const addNewSetAction = async (ctx) => {
   const userName = checkUserNameFromCallbackQuery(ctx);
   const callbackQuery = ctx.callbackQuery.data;
   const currentUser = userState.findUser(userName);
-  console.log(currentUser);
+
   const isApprovedCurrentLabel = (key, userUnswers) => {
     return userUnswers[key] != null ? true : false;
   };

@@ -107,7 +107,7 @@ const finishNewUserRegistration = async (ctx, message) => {
         userName,
         currentUser.answers
       );
-      currentUser.resetCurrentLabel();
+
       currentUser.resetPath();
       currentUser.resetUnswers();
       currentUser.setQuestions(questionTitlesForNewSet);
