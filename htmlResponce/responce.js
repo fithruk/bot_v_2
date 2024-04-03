@@ -21,7 +21,10 @@ class HtmlResponce {
       })
       .join("\n");
 
-    const fullResponce = `
+    const fullResponce =
+      exerciseArray.length == 0
+        ? "В текущей тренировке еще ничего небыло выполнено"
+        : `
 Было выполнено:
     ${exerciseArrayString}
 Введите данные о подходе который нужно удалить,в формате : Номер упражнения: [Число]-Номер подхода :[число]\n

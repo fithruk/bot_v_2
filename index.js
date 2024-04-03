@@ -89,10 +89,11 @@ bot.action(new RegExp(), async (ctx) => {
     const currentUser = userState.findUser(username);
     currentUser.updatePath(typeOfAction); // Добавляет указание по какому пути должен идти скрипт
     const individualScriptPointer = currentUser.path.split("/")[0];
-    console.log(individualScriptPointer + " in index");
+    //Вот здесь надо отрефакторить
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
-        addNewSetAction(ctx);
+        const error = await addNewSetAction(ctx);
+        if (error) ctx.reply(error.message);
         break;
       case functionsEnum.removeExistSet:
         removeExistingSetAction(ctx);
@@ -102,6 +103,7 @@ bot.action(new RegExp(), async (ctx) => {
         break;
 
       default:
+        await ctx.reply("Ошибка в логике, попробуйте еще раз");
         break;
     }
   } catch (error) {
@@ -112,7 +114,6 @@ bot.action(new RegExp(), async (ctx) => {
 });
 
 bot.on("message", async (ctx) => {
-  // Вынести в отдельную функцию, при добавлении функционала, может заюзать свитч-кейс
   const userName = checkUserName(ctx);
   const currentUser = userState.findUser(userName);
   const message = ctx.message.text;

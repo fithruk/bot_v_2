@@ -38,7 +38,6 @@ const addNewSetAction = async (ctx) => {
     countOfReps = new Array(30).fill(1).map((_, ind) => (ind += 1));
 
   await historyDestroyer(ctx);
-
   switch (currentUser.label) {
     case questionTitlesForNewSet[0]:
       groupes = await apiService.getAllMusclesGroupes();
@@ -61,8 +60,12 @@ const addNewSetAction = async (ctx) => {
           userAnswerKeysEnum.currentGroup,
           currentUser.answers
         )
-      )
-        return abortUserAnswerData(currentUser);
+      ) {
+        abortUserAnswerData(currentUser);
+        return new Error(
+          "Нарушен проядок выполнения запросов, попробуйте еще раз"
+        );
+      }
 
       subGroup = await apiService.getExercisesSubGroupe(
         currentUser.answers.currentGroup
@@ -85,8 +88,12 @@ const addNewSetAction = async (ctx) => {
           userAnswerKeysEnum.subGroup,
           currentUser.answers
         )
-      )
-        return abortUserAnswerData(currentUser);
+      ) {
+        abortUserAnswerData(currentUser);
+        return new Error(
+          "Нарушен проядок выполнения запросов, попробуйте еще раз"
+        );
+      }
 
       exersicesBySubGroupe = await apiService.getApartExerciseBySubGroup(
         currentUser.answers.currentGroup,
@@ -110,8 +117,12 @@ const addNewSetAction = async (ctx) => {
           userAnswerKeysEnum.exersice,
           currentUser.answers
         )
-      )
-        return abortUserAnswerData(currentUser);
+      ) {
+        abortUserAnswerData(currentUser);
+        return new Error(
+          "Нарушен проядок выполнения запросов, попробуйте еще раз"
+        );
+      }
 
       await markupReplier(
         ctx,
@@ -129,8 +140,12 @@ const addNewSetAction = async (ctx) => {
           userAnswerKeysEnum.countOfReps,
           currentUser.answers
         )
-      )
-        return abortUserAnswerData(currentUser);
+      ) {
+        abortUserAnswerData(currentUser);
+        return new Error(
+          "Нарушен проядок выполнения запросов, попробуйте еще раз"
+        );
+      }
 
       await ctx.reply(currentUser.label);
       break;

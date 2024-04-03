@@ -29,7 +29,7 @@ const removeExistingSetAction = async (ctx) => {
   currentUser.setExercisesForForcedUpdateInDB(Object.entries(uniqueExercises));
 
   await removeResponce.removeSetResponce(Object.entries(uniqueExercises));
-  await historyDestroyer(ctx, ctx.callbackQuery.message.message_id);
+  await historyDestroyer(ctx);
 };
 
 const finishRemoveSetAction = async (ctx, message) => {
@@ -44,7 +44,7 @@ const finishRemoveSetAction = async (ctx, message) => {
     try {
       await apiService.removeSet(userName, id);
       currentUser.resetPath();
-      await historyDestroyer(ctx, ctx.message.message_id);
+      await historyDestroyer(ctx);
       ctx.reply("Подход успешно удален.");
     } catch (error) {
       currentUser.resetPath();
