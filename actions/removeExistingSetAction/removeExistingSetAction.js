@@ -35,7 +35,7 @@ const removeExistingSetAction = async (ctx) => {
 
     await removeResponce.removeSetResponce(Object.entries(uniqueExercises));
     await historyDestroyer(ctx);
-    if (exerciseArray.length == 0) currentUser.resetPath();
+    if (exerciseArray.length == 0) return currentUser.resetPath();
   } catch (error) {
     console.log(error.message);
   }
@@ -48,7 +48,7 @@ const finishRemoveSetAction = async (ctx, message) => {
   const [numOfExercise, numOfSet] = message.split("-");
 
   const id = currentUser.exercisesForcedUpdate(+numOfExercise, +numOfSet);
-
+  console.log(id);
   if (id) {
     try {
       await apiService.removeSet(userName, id);
