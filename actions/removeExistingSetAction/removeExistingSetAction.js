@@ -30,6 +30,7 @@ const removeExistingSetAction = async (ctx) => {
 
   await removeResponce.removeSetResponce(Object.entries(uniqueExercises));
   await historyDestroyer(ctx);
+  if (exerciseArray.length == 0) currentUser.resetPath();
 };
 
 const finishRemoveSetAction = async (ctx, message) => {

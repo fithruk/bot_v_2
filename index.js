@@ -93,7 +93,7 @@ bot.action(new RegExp(), async (ctx) => {
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
         const error = await addNewSetAction(ctx);
-        if (error) ctx.reply(error.message);
+        if (error) throw error;
         break;
       case functionsEnum.removeExistSet:
         removeExistingSetAction(ctx);
@@ -109,6 +109,7 @@ bot.action(new RegExp(), async (ctx) => {
   } catch (error) {
     console.log(error.message);
     console.log("Error in bot.action(new RegExp()");
+    await ctx.reply(error.message);
     await ctx.reply("Unexpect error, try again...");
   }
 });
