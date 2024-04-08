@@ -58,6 +58,7 @@ bot.command("newTraining", async (ctx) => {
     console.log("Error in 'bot.command'newTraining'");
     console.log(error.message);
     console.log(error);
+    await ctx.reply(error.message);
   }
 });
 
@@ -67,6 +68,7 @@ bot.command("newSet", async (ctx) => {
   } catch (error) {
     console.log("Error in 'bot.command'newSet'");
     console.log(error.message);
+    await ctx.reply(error.message);
   }
 });
 
