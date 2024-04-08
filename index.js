@@ -2,6 +2,7 @@ const { Telegraf, Markup } = require("telegraf");
 const { newTrainingCommand } = require("./commands/newTraining");
 const { newSetCommand } = require("./commands/newSet");
 const { startCommand } = require("./commands/start");
+const { commands } = require("./help");
 const {
   markupReplier,
   buttonsLabelsForNewSetCommand,
@@ -70,7 +71,7 @@ bot.command("newSet", async (ctx) => {
 });
 
 bot.help((ctx) => {
-  ctx.reply(comands);
+  ctx.reply(commands);
 });
 
 // Тип функций приложения, типа ENUM
@@ -87,8 +88,17 @@ bot.action(new RegExp(), async (ctx) => {
 
     const typeOfAction = ctx.callbackQuery.data.split("=")[1];
     const currentUser = userState.findUser(username);
+    if (!currentUser) {
+      await historyDestroyer(ctx);
+      ctx.reply(
+        "Используйте команды для взаиможействия с ботом, команды можно посмотреть выполнив команду '/help'"
+      );
+      return;
+    }
+
     currentUser.updatePath(typeOfAction); // Добавляет указание по какому пути должен идти скрипт
     const individualScriptPointer = currentUser.path.split("/")[0];
+
     //Вот здесь надо отрефакторить
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
@@ -107,7 +117,7 @@ bot.action(new RegExp(), async (ctx) => {
         break;
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     console.log("Error in bot.action(new RegExp()");
     await ctx.reply(error.message);
     await ctx.reply("Unexpect error, try again...");
@@ -117,9 +127,18 @@ bot.action(new RegExp(), async (ctx) => {
 bot.on("message", async (ctx) => {
   const userName = checkUserName(ctx);
   const currentUser = userState.findUser(userName);
+  if (!currentUser) {
+    await historyDestroyer(ctx);
+    ctx.reply(
+      "Используйте команды для взаиможействия с ботом, команды можно посмотреть выполнив команду '/help'"
+    );
+    return;
+  }
+
   const message = ctx.message.text;
   const isNanMessage = Number.isNaN(+message);
   const individualScriptPointer = currentUser.path.split("/")[0];
+  if (!individualScriptPointer) return await historyDestroyer(ctx);
 
   try {
     switch (individualScriptPointer) {
@@ -132,18 +151,20 @@ bot.on("message", async (ctx) => {
         }
         break;
       case functionsEnum.removeExistSet:
-        await finishRemoveSetAction(ctx, message);
+        const error = await finishRemoveSetAction(ctx, message);
+        if (error) throw error;
         break;
 
       case functionsEnum.createNewUser:
         await finishNewUserRegistration(ctx, message);
         break;
       default:
+        await historyDestroyer(ctx);
         break;
     }
   } catch (error) {
-    console.log(error);
-    await ctx.reply("Unexpected error, try again...");
+    console.error(error.message);
+    await ctx.reply(error.message);
   }
 });
 

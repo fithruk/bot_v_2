@@ -42,7 +42,12 @@ const removeExistingSetAction = async (ctx) => {
 };
 
 const finishRemoveSetAction = async (ctx, message) => {
-  if (!message.includes("-")) return console.log("Wrong data");
+  if (!message.includes("-")) {
+    console.log("Wrong data");
+    return new Error(
+      "Укажите сообщение в формате : номер упражения - номер подхода"
+    );
+  }
   const userName = checkUserName(ctx);
   const currentUser = userState.findUser(userName);
   const [numOfExercise, numOfSet] = message.split("-");

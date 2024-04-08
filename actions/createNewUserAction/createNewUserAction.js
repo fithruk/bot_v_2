@@ -9,7 +9,6 @@ const {
 } = require("../../helpers/helpers");
 const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
-const { User } = require("../../user/user");
 
 const regAnswers = { name: null, email: null, phone: null };
 
@@ -26,7 +25,6 @@ const createNewUserAction = async (ctx) => {
 
   currentUser.setUnswers(regAnswers);
 
-  // const currentUser = userState.findUser(userName);
   switch (currentUser.label) {
     case registrationQuestions[0]:
       await ctx.reply(currentUser.label);
