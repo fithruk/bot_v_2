@@ -91,9 +91,8 @@ bot.action(new RegExp(), async (ctx) => {
     const typeOfAction = ctx.callbackQuery.data.split("=")[1];
     const currentUser = userState.findUser(username);
     if (!currentUser) {
-      await historyDestroyer(ctx);
-      ctx.reply(
-        "Используйте команды для взаиможействия с ботом, команды можно посмотреть выполнив команду '/help'"
+      throw new Error(
+        "Незарегистрированный пользователь, выполните команду '/start'"
       );
       return;
     }
@@ -127,22 +126,21 @@ bot.action(new RegExp(), async (ctx) => {
 });
 
 bot.on("message", async (ctx) => {
-  const userName = checkUserName(ctx);
-  const currentUser = userState.findUser(userName);
-  if (!currentUser) {
-    await historyDestroyer(ctx);
-    ctx.reply(
-      "Используйте команды для взаиможействия с ботом, команды можно посмотреть выполнив команду '/help'"
-    );
-    return;
-  }
-
-  const message = ctx.message.text;
-  const isNanMessage = Number.isNaN(+message);
-  const individualScriptPointer = currentUser.path.split("/")[0];
-  if (!individualScriptPointer) return await historyDestroyer(ctx);
-
   try {
+    const userName = checkUserName(ctx);
+    const currentUser = userState.findUser(userName);
+    if (!currentUser) {
+      throw new Error(
+        "Незарегистрированный пользователь, выполните команду '/start'"
+      );
+      return;
+    }
+
+    const message = ctx.message.text;
+    const isNanMessage = Number.isNaN(+message);
+    const individualScriptPointer = currentUser.path.split("/")[0];
+    if (!individualScriptPointer) return await historyDestroyer(ctx);
+
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
         if (Object.entries(currentUser.answers).every((answ) => answ != null)) {
