@@ -1,6 +1,6 @@
 class HtmlResponce {
-  constructor(context) {
-    this.ctx = context;
+  constructor(ctx) {
+    this.ctx = ctx;
   }
 
   async removeSetResponce(exerciseArray) {
@@ -21,10 +21,7 @@ class HtmlResponce {
       })
       .join("\n");
 
-    const fullResponce =
-      exerciseArray.length == 0
-        ? "В текущей тренировке еще ничего небыло выполнено"
-        : `
+    const fullResponce = `
 Было выполнено:
     ${exerciseArrayString}
 Введите данные о подходе который нужно удалить,в формате : Номер упражнения: [Число]-Номер подхода :[число]\n

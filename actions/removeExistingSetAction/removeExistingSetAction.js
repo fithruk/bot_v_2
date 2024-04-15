@@ -33,9 +33,13 @@ const removeExistingSetAction = async (ctx) => {
       Object.entries(uniqueExercises)
     );
 
-    await removeResponce.removeSetResponce(Object.entries(uniqueExercises));
     await historyDestroyer(ctx);
-    if (exerciseArray.length == 0) return currentUser.resetPath();
+    if (exerciseArray.length == 0) {
+      currentUser.resetPath();
+      return new Error("В текущей тренировке еще ничего не было выполнено.");
+    }
+
+    await removeResponce.removeSetResponce(Object.entries(uniqueExercises));
   } catch (error) {
     console.log(error.message);
   }

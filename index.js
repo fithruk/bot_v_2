@@ -103,11 +103,12 @@ bot.action(new RegExp(), async (ctx) => {
     //Вот здесь надо отрефакторить
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
-        const error = await addNewSetAction(ctx);
-        if (error) throw error;
+        const error1 = await addNewSetAction(ctx);
+        if (error1) throw error1;
         break;
       case functionsEnum.removeExistSet:
-        removeExistingSetAction(ctx);
+        const error2 = await removeExistingSetAction(ctx);
+        if (error2) throw error2;
         break;
       case functionsEnum.createNewUser:
         createNewUserAction(ctx);
@@ -121,7 +122,6 @@ bot.action(new RegExp(), async (ctx) => {
     console.error(error.message);
     console.log("Error in bot.action(new RegExp()");
     await ctx.reply(error.message);
-    await ctx.reply("Unexpect error, try again...");
   }
 });
 
