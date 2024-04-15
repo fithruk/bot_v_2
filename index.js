@@ -115,6 +115,7 @@ bot.action(new RegExp(), async (ctx) => {
         break;
 
       default:
+        currentUser.resetPath();
         await ctx.reply("Ошибка в логике, попробуйте еще раз");
         break;
     }
