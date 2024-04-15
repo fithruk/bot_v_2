@@ -88,7 +88,6 @@ bot.action(new RegExp(), async (ctx) => {
   try {
     await botHelper.historyDestroyer(ctx);
     const username = botHelper.checkUserNameFromCallbackQuery(ctx);
-
     const typeOfAction = ctx.callbackQuery.data.split("=")[1];
     const currentUser = userState.findUser(username);
     if (!currentUser) {
