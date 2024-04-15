@@ -3,14 +3,6 @@ const { newTrainingCommand } = require("./commands/newTraining");
 const { newSetCommand } = require("./commands/newSet");
 const { startCommand } = require("./commands/start");
 const { commands } = require("./help");
-// const {
-//   markupReplier,
-//   buttonsLabelsForNewSetCommand,
-//   checkUserName,
-//   checkUserNameFromCallbackQuery,
-//   startOptions,
-//   historyDestroyer,
-// } = require("./helpers/helpers");
 const botHelper = require("./helpers/helpers");
 const userState = require("./userState/userState");
 const {
