@@ -1,14 +1,9 @@
-const {
-  checkUserName,
-  markupReplier,
-  buttonsLabelsForNewSetCommand,
-  historyDestroyer,
-} = require("../helpers/helpers");
+const botHelper = require("../helpers/helpers");
 
 const { apiService } = require("../apiService/apiService");
 
 const newSetCommand = async (ctx) => {
-  const userName = checkUserName(ctx);
+  const userName = botHelper.checkUserName(ctx);
 
   try {
     const { isExist } = await apiService.findUser(userName);
@@ -20,11 +15,11 @@ const newSetCommand = async (ctx) => {
 
     // Надо порефакторить
 
-    await historyDestroyer(ctx);
-    await markupReplier(
+    await botHelper.historyDestroyer(ctx);
+    await botHelper.markupReplier(
       ctx,
       "Выберите функцию :",
-      buttonsLabelsForNewSetCommand,
+      botHelper.getButtonsLabelsForNewSetCommand(),
       "typeOfAction"
     ); // Вынести ключ в енам ключей, использовать как элемент path в объекте юзера
   } catch (error) {

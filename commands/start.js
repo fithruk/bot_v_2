@@ -1,10 +1,4 @@
-const {
-  markupReplier,
-  startOptions,
-  questionTitlesForNewSet,
-  checkUserName,
-  registrationQuestions,
-} = require("../helpers/helpers");
+const botHelper = require("../helpers/helpers");
 const { apiService } = require("../apiService/apiService");
 const { User } = require("../user/user");
 const userState = require("../userState/userState");
@@ -12,17 +6,26 @@ const userState = require("../userState/userState");
 const regAnswers = { name: null, email: null, phone: null };
 
 const startCommand = async (ctx) => {
-  const userName = checkUserName(ctx);
+  const userName = botHelper.checkUserName(ctx);
 
   try {
     const { isExist } = await apiService.findUser(userName);
     isExist
-      ? userState.addNewUser(new User(userName, questionTitlesForNewSet))
-      : userState.addNewUser(new User(userName, registrationQuestions));
+      ? userState.addNewUser(
+          new User(userName, botHelper.getQuestionTitlesForNewSet())
+        )
+      : userState.addNewUser(
+          new User(userName, botHelper.getRegistrationQuestions())
+        );
 
     const currentUser = userState.findUser(userName);
     currentUser.setUnswers(regAnswers);
-    await markupReplier(ctx, "Выберите опцию :", startOptions, "typeOfAction");
+    await botHelper.markupReplier(
+      ctx,
+      "Выберите опцию :",
+      botHelper.getstartOptions(),
+      "typeOfAction"
+    );
   } catch (error) {
     console.log(error.message);
     console.log("error in startComand");

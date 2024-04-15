@@ -1,10 +1,4 @@
-const {
-  markupReplier,
-  checkUserNameFromCallbackQuery,
-  questionTitlesForNewSet,
-  callbackCreator,
-  historyDestroyer,
-} = require("../../helpers/helpers");
+const botHelper = require("../../helpers/helpers");
 const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
 
@@ -23,7 +17,7 @@ const userAnswerKeysEnum = {
 };
 
 const addNewSetAction = async (ctx) => {
-  const userName = checkUserNameFromCallbackQuery(ctx);
+  const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
   const callbackQuery = ctx.callbackQuery.data;
   const currentUser = userState.findUser(userName);
 
@@ -37,12 +31,12 @@ const addNewSetAction = async (ctx) => {
     exercise,
     countOfReps = new Array(30).fill(1).map((_, ind) => (ind += 1));
 
-  await historyDestroyer(ctx);
+  await botHelper.historyDestroyer(ctx);
   switch (currentUser.label) {
-    case questionTitlesForNewSet[0]:
+    case botHelper.getQuestionTitlesForNewSet()[0]:
       groupes = await apiService.getAllMusclesGroupes();
 
-      await markupReplier(
+      await botHelper.markupReplier(
         ctx,
         currentUser.label,
         groupes,
@@ -53,7 +47,7 @@ const addNewSetAction = async (ctx) => {
 
       break;
 
-    case questionTitlesForNewSet[1]:
+    case botHelper.getQuestionTitlesForNewSet()[1]:
       currentUser.updateUnswers(callbackQuery);
       if (
         !isApprovedCurrentLabel(
@@ -71,7 +65,7 @@ const addNewSetAction = async (ctx) => {
         currentUser.answers.currentGroup
       );
 
-      await markupReplier(
+      await botHelper.markupReplier(
         ctx,
         currentUser.label,
         subGroup,
@@ -81,7 +75,7 @@ const addNewSetAction = async (ctx) => {
       currentUser.updateCurrentLabel();
       break;
 
-    case questionTitlesForNewSet[2]:
+    case botHelper.getQuestionTitlesForNewSet()[2]:
       currentUser.updateUnswers(callbackQuery);
       if (
         !isApprovedCurrentLabel(
@@ -100,7 +94,7 @@ const addNewSetAction = async (ctx) => {
         currentUser.answers.subGroup
       );
 
-      await markupReplier(
+      await botHelper.markupReplier(
         ctx,
         currentUser.label,
         exersicesBySubGroupe,
@@ -110,7 +104,7 @@ const addNewSetAction = async (ctx) => {
       currentUser.updateCurrentLabel();
       break;
 
-    case questionTitlesForNewSet[3]:
+    case botHelper.getQuestionTitlesForNewSet()[3]:
       currentUser.updateUnswers(callbackQuery);
       if (
         !isApprovedCurrentLabel(
@@ -124,7 +118,7 @@ const addNewSetAction = async (ctx) => {
         );
       }
 
-      await markupReplier(
+      await botHelper.markupReplier(
         ctx,
         currentUser.label,
         countOfReps,
@@ -133,7 +127,7 @@ const addNewSetAction = async (ctx) => {
       currentUser.updateCurrentLabel();
       break;
 
-    case questionTitlesForNewSet[4]:
+    case botHelper.getQuestionTitlesForNewSet()[4]:
       currentUser.updateUnswers(callbackQuery);
       if (
         !isApprovedCurrentLabel(
@@ -158,7 +152,7 @@ const addNewSetAction = async (ctx) => {
 const finishNewSetAction = async (ctx, currentUser, message) => {
   // Придумать как сбросить данные на последнем шаге, как нибудь потом
   try {
-    const callback = callbackCreator(
+    const callback = botHelper.callbackCreator(
       userAnswerKeysEnum.weightOfequipment,
       +message
     );
@@ -170,7 +164,7 @@ const finishNewSetAction = async (ctx, currentUser, message) => {
       currentUser.answers.weightOfequipment
     );
     abortUserAnswerData(currentUser);
-    await historyDestroyer(ctx);
+    await botHelper.historyDestroyer(ctx);
     ctx.reply("Подход успешно сохранен!");
   } catch (error) {
     console.log("Error in bot.on'message', during finish exersice");

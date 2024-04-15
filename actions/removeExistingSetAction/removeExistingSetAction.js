@@ -1,14 +1,10 @@
 const { apiService } = require("../../apiService/apiService");
-const {
-  checkUserNameFromCallbackQuery,
-  checkUserName,
-  historyDestroyer,
-} = require("../../helpers/helpers");
+const botHelper = require("../../helpers/helpers");
 const userState = require("../../userState/userState");
 const HtmlResponce = require("../../htmlResponce/responce");
 
 const removeExistingSetAction = async (ctx) => {
-  const userName = checkUserNameFromCallbackQuery(ctx);
+  const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
   const currentUser = userState.findUser(userName);
   try {
     const { currentUserSession } = await apiService.getCurrentTraining(
@@ -33,7 +29,7 @@ const removeExistingSetAction = async (ctx) => {
       Object.entries(uniqueExercises)
     );
 
-    await historyDestroyer(ctx);
+    await botHelper.historyDestroyer(ctx);
     if (exerciseArray.length == 0) {
       currentUser.resetPath();
       return new Error("В текущей тренировке еще ничего не было выполнено.");
@@ -52,7 +48,7 @@ const finishRemoveSetAction = async (ctx, message) => {
       "Укажите сообщение в формате : номер упражения - номер подхода"
     );
   }
-  const userName = checkUserName(ctx);
+  const userName = botHelper.checkUserName(ctx);
   const currentUser = userState.findUser(userName);
   const [numOfExercise, numOfSet] = message.split("-");
 
@@ -62,7 +58,7 @@ const finishRemoveSetAction = async (ctx, message) => {
     try {
       await apiService.removeSet(userName, id);
       currentUser.resetPath();
-      await historyDestroyer(ctx);
+      await botHelper.historyDestroyer(ctx);
       ctx.reply("Подход успешно удален.");
     } catch (error) {
       currentUser.resetPath();

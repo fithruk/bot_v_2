@@ -1,19 +1,11 @@
-const {
-  checkUserName,
-  checkUserNameFromCallbackQuery,
-  registrationQuestions,
-  callbackCreator,
-  historyDestroyer,
-  questionTitlesForNewSet,
-  answersForNewSet,
-} = require("../../helpers/helpers");
+const botHelper = require("../../helpers/helpers");
 const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
 
 const regAnswers = { name: null, email: null, phone: null };
 
 const createNewUserAction = async (ctx) => {
-  const userName = checkUserNameFromCallbackQuery(ctx);
+  const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
   const currentUser = userState.findUser(userName);
 
   const { isExist } = await apiService.findUser(userName);
@@ -26,7 +18,7 @@ const createNewUserAction = async (ctx) => {
   currentUser.setUnswers(regAnswers);
 
   switch (currentUser.label) {
-    case registrationQuestions[0]:
+    case botHelper.getRegistrationQuestions()[0]:
       await ctx.reply(currentUser.label);
 
       break;
@@ -42,15 +34,18 @@ const createNewUserAction = async (ctx) => {
 };
 
 const regAnswerKeysEnam = new Map([
-  [registrationQuestions[0], "name"],
-  [registrationQuestions[1], "email"],
-  [registrationQuestions[2], "phone"],
+  [botHelper.getRegistrationQuestions()[0], "name"],
+  [botHelper.getRegistrationQuestions()[1], "email"],
+  [botHelper.getRegistrationQuestions()[2], "phone"],
 ]);
 
 const saveUserRegStepToStore = (regAnswerKeysEnam, currentUser, message) => {
   if (regAnswerKeysEnam.has(currentUser.label)) {
     currentUser.updateUnswers(
-      callbackCreator(regAnswerKeysEnam.get(currentUser.label), message)
+      botHelper.callbackCreator(
+        regAnswerKeysEnam.get(currentUser.label),
+        message
+      )
     );
     currentUser.updateCurrentLabel();
   }
@@ -67,12 +62,12 @@ function validatePhoneNumber(phoneNumber) {
 }
 
 const finishNewUserRegistration = async (ctx, message) => {
-  const userName = checkUserName(ctx);
+  const userName = botHelper.checkUserName(ctx);
   const currentUser = userState.findUser(userName);
-  await historyDestroyer(ctx);
+  await botHelper.historyDestroyer(ctx);
 
   switch (currentUser.label) {
-    case registrationQuestions[0]:
+    case botHelper.getRegistrationQuestions()[0]:
       const [firstName, lastName] = message.split(" ");
       if (!firstName || !lastName)
         return ctx.reply("Введите имя и фамилию в два слова!");
@@ -85,7 +80,7 @@ const finishNewUserRegistration = async (ctx, message) => {
       saveUserRegStepToStore(regAnswerKeysEnam, currentUser, message);
       await ctx.reply(currentUser.label);
       break;
-    case registrationQuestions[1]:
+    case botHelper.getRegistrationQuestions()[1]:
       if (!validateEmail(message))
         return ctx.reply(
           "Недействительный адрес электронной почты.Повторите потытку и введите валидный адрес!"
@@ -93,7 +88,7 @@ const finishNewUserRegistration = async (ctx, message) => {
       saveUserRegStepToStore(regAnswerKeysEnam, currentUser, message);
       await ctx.reply(currentUser.label);
       break;
-    case registrationQuestions[2]:
+    case botHelper.getRegistrationQuestions()[2]:
       if (!validatePhoneNumber(message)) {
         return ctx.reply(
           "Введите валидный номер телефона в указанном формате: 380XXXXXXXX"
@@ -108,8 +103,8 @@ const finishNewUserRegistration = async (ctx, message) => {
 
       currentUser.resetPath();
       currentUser.resetUnswers();
-      currentUser.setQuestions(questionTitlesForNewSet);
-      currentUser.setUnswers(answersForNewSet);
+      currentUser.setQuestions(botHelper.getQuestionTitlesForNewSet());
+      currentUser.setUnswers(botHelper.getAnswersForNewSet());
       currentUser.resetCurrentLabel();
       await ctx.reply(response);
       break;

@@ -1,117 +1,128 @@
 const { Markup } = require("telegraf");
 
-const startOptions = [
-  "Создать новый профиль",
-  "Что-то еще очень нужное",
-  "Не менее нужное",
-];
+class BotHelper {
+  #startOptions = [
+    "Создать новый профиль",
+    "Что-то еще очень нужное",
+    "Не менее нужное",
+  ];
 
-const buttonsLabelsForNewSetCommand = [
-  "Добавить новый подход",
-  "Удалить созданный подход",
-];
+  #buttonsLabelsForNewSetCommand = [
+    "Добавить новый подход",
+    "Удалить созданный подход",
+  ];
 
-const questionTitlesForNewSet = [
-  "Выберите мышечную группу :",
-  "Выберите подгруппу :",
-  "Выберите упражнение :",
-  "Выберите количество повторений :",
-  "Введите вес снаряда в цифрах :",
-];
+  #questionTitlesForNewSet = [
+    "Выберите мышечную группу :",
+    "Выберите подгруппу :",
+    "Выберите упражнение :",
+    "Выберите количество повторений :",
+    "Введите вес снаряда в цифрах :",
+  ];
 
-const registrationQuestions = [
-  "Введите имя и фамилию :",
-  "Ведите адрес электорнной почты :",
-  "Ведите номер телефона в формате 380XXXXXXXX:",
-];
+  #registrationQuestions = [
+    "Введите имя и фамилию :",
+    "Ведите адрес электорнной почты :",
+    "Ведите номер телефона в формате 380XXXXXXXX:",
+  ];
 
-const answersForNewSet = {
-  currentGroup: null,
-  subGroup: null,
-  exersice: null,
-  countOfReps: null,
-  weightOfequipment: null,
-};
+  #answersForNewSet = {
+    currentGroup: null,
+    subGroup: null,
+    exersice: null,
+    countOfReps: null,
+    weightOfequipment: null,
+  };
 
-const checkUserName = (ctx) => {
-  return ctx.message.from.username
-    ? ctx.message.from.username
-    : `${ctx.message.from.first_name}-${ctx.message.from.id}`;
-};
+  getstartOptions = () => {
+    return this.#startOptions;
+  };
 
-const checkUserNameFromCallbackQuery = (ctx) => {
-  return ctx.callbackQuery.from.username
-    ? ctx.callbackQuery.from.username
-    : `${ctx.callbackQuery.from.first_name}-${ctx.callbackQuery.from.id}`;
-};
+  getButtonsLabelsForNewSetCommand = () => {
+    return this.#buttonsLabelsForNewSetCommand;
+  };
 
-const callbackCreator = (key, value) => `${key}=${value}`;
+  getQuestionTitlesForNewSet = () => {
+    return this.#questionTitlesForNewSet;
+  };
 
-// const sliseArray = (array) => {
-//   if (!Array.isArray(array)) return;
+  getRegistrationQuestions = () => {
+    return this.#registrationQuestions;
+  };
 
-//   const resArr = [];
-//   const newArr = [...array];
+  getAnswersForNewSet = () => {
+    return this.#answersForNewSet;
+  };
 
-//   let start = 0,
-//     step = 4;
+  checkUserName = (ctx) => {
+    return ctx.message.from.username
+      ? ctx.message.from.username
+      : `${ctx.message.from.first_name}-${ctx.message.from.id}`;
+  };
 
-//   if (newArr.length > 4) {
-//     for (let i = 0; i < newArr.length; i++) {
-//       let buttonsRow = newArr.slice(start, step + start);
-//       resArr.push([...buttonsRow]);
-//       start += step;
-//       if (start > newArr.length) break;
-//     }
-//   }
-//   return resArr;
-// };
+  checkUserNameFromCallbackQuery = (ctx) => {
+    return ctx.callbackQuery.from.username
+      ? ctx.callbackQuery.from.username
+      : `${ctx.callbackQuery.from.first_name}-${ctx.callbackQuery.from.id}`;
+  };
 
-const markupReplier = async (
-  ctx,
-  titleQuestion = "",
-  buttonsArray = [],
-  keyForCallback
-) => {
-  // if (buttonsArray.length > 5) buttonsArray = sliseArray(buttonsArray);
+  callbackCreator = (key, value) => `${key}=${value}`;
 
-  await ctx.replyWithHTML(
-    titleQuestion,
-    Markup.inlineKeyboard(
-      buttonsArray.map((buttonLabel) => [
-        Markup.button.callback(
-          buttonLabel,
-          callbackCreator(keyForCallback, buttonLabel)
-        ),
-      ])
-    )
-  );
-};
+  // const sliseArray = (array) => {
+  //   if (!Array.isArray(array)) return;
 
-const historyDestroyer = async (ctx) => {
-  const messageId = ctx.callbackQuery
-    ? ctx.callbackQuery.message.message_id
-    : ctx.message.message_id;
-  let i = 0;
+  //   const resArr = [];
+  //   const newArr = [...array];
 
-  while (true) {
-    try {
-      await ctx.deleteMessage(messageId - i++);
-    } catch (e) {
-      break;
+  //   let start = 0,
+  //     step = 4;
+
+  //   if (newArr.length > 4) {
+  //     for (let i = 0; i < newArr.length; i++) {
+  //       let buttonsRow = newArr.slice(start, step + start);
+  //       resArr.push([...buttonsRow]);
+  //       start += step;
+  //       if (start > newArr.length) break;
+  //     }
+  //   }
+  //   return resArr;
+  // };
+
+  markupReplier = async (
+    ctx,
+    titleQuestion = "",
+    buttonsArray = [],
+    keyForCallback
+  ) => {
+    // if (buttonsArray.length > 5) buttonsArray = sliseArray(buttonsArray);
+
+    await ctx.replyWithHTML(
+      titleQuestion,
+      Markup.inlineKeyboard(
+        buttonsArray.map((buttonLabel) => [
+          Markup.button.callback(
+            buttonLabel,
+            callbackCreator(keyForCallback, buttonLabel)
+          ),
+        ])
+      )
+    );
+  };
+
+  historyDestroyer = async (ctx) => {
+    const messageId = ctx.callbackQuery
+      ? ctx.callbackQuery.message.message_id
+      : ctx.message.message_id;
+    let i = 0;
+
+    while (true) {
+      try {
+        await ctx.deleteMessage(messageId - i++);
+      } catch (e) {
+        break;
+      }
     }
-  }
-};
+  };
+}
 
-module.exports = {
-  checkUserName,
-  markupReplier,
-  checkUserNameFromCallbackQuery,
-  buttonsLabelsForNewSetCommand,
-  questionTitlesForNewSet,
-  callbackCreator,
-  historyDestroyer,
-  startOptions,
-  registrationQuestions,
-  answersForNewSet,
-};
+module.exports = new BotHelper();

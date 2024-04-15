@@ -1,10 +1,7 @@
-const { User } = require("../user/user");
-const { questionTitlesForNewSet } = require("../helpers/helpers");
-
 class UserState {
   constructor() {
     this.userStore = [];
-  } // Костыль!!!!
+  }
 
   viewStore = () => {
     console.log(this.userStore);

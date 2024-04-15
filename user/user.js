@@ -1,4 +1,4 @@
-const { answersForNewSet } = require("../helpers/helpers");
+const botHelper = require("../helpers/helpers");
 
 class User {
   #exercises;
@@ -8,7 +8,7 @@ class User {
     this.currentLabel = 0;
     this.questionTitles = questionTitles;
     this.label = this.questionTitles[this.currentLabel];
-    this.answers = answersForNewSet;
+    this.answers = botHelper.getAnswersForNewSet();
     this.path = "";
     this.#exercises = [];
   }

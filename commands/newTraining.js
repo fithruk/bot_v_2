@@ -1,15 +1,15 @@
 const { apiService } = require("../apiService/apiService");
 
-const { checkUserName, historyDestroyer } = require("../helpers/helpers");
+const botHelper = require("../helpers/helpers");
 
 const newTrainingCommand = async (ctx) => {
-  const userName = checkUserName(ctx);
+  const userName = botHelper.checkUserName(ctx);
 
   const { isExist } = await apiService.findUser(userName);
   if (!isExist)
     return ctx.reply("Необходима регистрация, выполните команду '/start'");
 
-  await historyDestroyer(ctx);
+  await botHelper.historyDestroyer(ctx);
   const responce = await apiService.initialNewTraining(userName);
   switch (responce.status) {
     case "succes":

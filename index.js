@@ -3,14 +3,15 @@ const { newTrainingCommand } = require("./commands/newTraining");
 const { newSetCommand } = require("./commands/newSet");
 const { startCommand } = require("./commands/start");
 const { commands } = require("./help");
-const {
-  markupReplier,
-  buttonsLabelsForNewSetCommand,
-  checkUserName,
-  checkUserNameFromCallbackQuery,
-  startOptions,
-  historyDestroyer,
-} = require("./helpers/helpers");
+// const {
+//   markupReplier,
+//   buttonsLabelsForNewSetCommand,
+//   checkUserName,
+//   checkUserNameFromCallbackQuery,
+//   startOptions,
+//   historyDestroyer,
+// } = require("./helpers/helpers");
+const botHelper = require("./helpers/helpers");
 const userState = require("./userState/userState");
 const {
   addNewSetAction,
@@ -78,15 +79,15 @@ bot.help((ctx) => {
 
 // Тип функций приложения, типа ENUM
 const functionsEnum = {
-  createNewSet: buttonsLabelsForNewSetCommand[0],
-  removeExistSet: buttonsLabelsForNewSetCommand[1],
-  createNewUser: startOptions[0],
+  createNewSet: botHelper.getButtonsLabelsForNewSetCommand()[0],
+  removeExistSet: botHelper.getButtonsLabelsForNewSetCommand()[1],
+  createNewUser: botHelper.getstartOptions()[0],
 };
 
 bot.action(new RegExp(), async (ctx) => {
   try {
-    await historyDestroyer(ctx);
-    const username = checkUserNameFromCallbackQuery(ctx);
+    await botHelper.historyDestroyer(ctx);
+    const username = botHelper.checkUserNameFromCallbackQuery(ctx);
 
     const typeOfAction = ctx.callbackQuery.data.split("=")[1];
     const currentUser = userState.findUser(username);
@@ -128,7 +129,7 @@ bot.action(new RegExp(), async (ctx) => {
 
 bot.on("message", async (ctx) => {
   try {
-    const userName = checkUserName(ctx);
+    const userName = botHelper.checkUserName(ctx);
     const currentUser = userState.findUser(userName);
     if (!currentUser) {
       throw new Error(
@@ -140,7 +141,7 @@ bot.on("message", async (ctx) => {
     const message = ctx.message.text;
     const isNanMessage = Number.isNaN(+message);
     const individualScriptPointer = currentUser.path.split("/")[0];
-    if (!individualScriptPointer) return await historyDestroyer(ctx);
+    if (!individualScriptPointer) return await botHelper.historyDestroyer(ctx);
 
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
@@ -161,7 +162,7 @@ bot.on("message", async (ctx) => {
         break;
       default:
         currentUser.resetPath();
-        await historyDestroyer(ctx);
+        await botHelper.historyDestroyer(ctx);
         break;
     }
   } catch (error) {
