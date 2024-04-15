@@ -160,6 +160,7 @@ bot.on("message", async (ctx) => {
         await finishNewUserRegistration(ctx, message);
         break;
       default:
+        currentUser.resetPath();
         await historyDestroyer(ctx);
         break;
     }
