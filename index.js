@@ -37,6 +37,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start(async (ctx) => {
   try {
+    await botHelper.historyDestroyer(ctx);
     await startCommand(ctx);
   } catch (error) {
     console.log("error in start");
@@ -46,6 +47,7 @@ bot.start(async (ctx) => {
 
 bot.command("newTraining", async (ctx) => {
   try {
+    await botHelper.historyDestroyer(ctx);
     await newTrainingCommand(ctx);
   } catch (error) {
     console.log("Error in 'bot.command'newTraining'");
@@ -57,6 +59,7 @@ bot.command("newTraining", async (ctx) => {
 
 bot.command("newSet", async (ctx) => {
   try {
+    await botHelper.historyDestroyer(ctx);
     await newSetCommand(ctx);
   } catch (error) {
     console.log("Error in 'bot.command'newSet'");
@@ -65,7 +68,8 @@ bot.command("newSet", async (ctx) => {
   }
 });
 
-bot.help((ctx) => {
+bot.help(async (ctx) => {
+  await botHelper.historyDestroyer(ctx);
   ctx.reply(commands);
 });
 

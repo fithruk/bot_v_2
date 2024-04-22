@@ -102,7 +102,7 @@ class BotHelper {
         buttonsArray.map((buttonLabel) => [
           Markup.button.callback(
             buttonLabel,
-            callbackCreator(keyForCallback, buttonLabel)
+            this.callbackCreator(keyForCallback, buttonLabel)
           ),
         ])
       )
