@@ -2,6 +2,7 @@ const { Telegraf, Markup } = require("telegraf");
 const { newTrainingCommand } = require("./commands/newTraining");
 const { newSetCommand } = require("./commands/newSet");
 const { startCommand } = require("./commands/start");
+const { getStat } = require("./commands/getStat");
 const { commands } = require("./help");
 const botHelper = require("./helpers/helpers");
 const userState = require("./userState/userState");
@@ -63,6 +64,17 @@ bot.command("newSet", async (ctx) => {
     await newSetCommand(ctx);
   } catch (error) {
     console.log("Error in 'bot.command'newSet'");
+    console.log(error.message);
+    await ctx.reply(error.message);
+  }
+});
+
+bot.command("getStat", async (ctx) => {
+  try {
+    await botHelper.historyDestroyer(ctx);
+    await getStat(ctx);
+  } catch (error) {
+    console.log("Error in 'bot.command'getStat'");
     console.log(error.message);
     await ctx.reply(error.message);
   }

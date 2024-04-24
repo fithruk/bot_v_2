@@ -11,13 +11,11 @@ const getStat = async (ctx) => {
     if (!isExist)
       return ctx.reply("Необходима регистрация, выполните команду '/start'");
 
-    // Надо порефакторить
-
     await botHelper.historyDestroyer(ctx);
     await botHelper.markupReplier(
       ctx,
-      "Выберите функцию :",
-      botHelper.getButtonsLabelsForNewSetCommand(),
+      "Данные которые нужно загрузить :",
+      ["Личные рекорды", "Кол-во тренировок за период"],
       "typeOfAction"
     ); // Вынести ключ в енам ключей, использовать как элемент path в объекте юзера
   } catch (error) {
