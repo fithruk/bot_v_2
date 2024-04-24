@@ -34,6 +34,8 @@ class BotHelper {
     weightOfequipment: null,
   };
 
+  #statOptions = ["Личные рекорды", "Тренировки за период", " ", " ", " "];
+
   getstartOptions = () => {
     return this.#startOptions;
   };
@@ -52,6 +54,10 @@ class BotHelper {
 
   getAnswersForNewSet = () => {
     return this.#answersForNewSet;
+  };
+
+  getStatOptions = () => {
+    return this.#statOptions;
   };
 
   checkUserName = (ctx) => {

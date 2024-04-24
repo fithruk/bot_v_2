@@ -15,7 +15,7 @@ const getStat = async (ctx) => {
     await botHelper.markupReplier(
       ctx,
       "Данные которые нужно загрузить :",
-      ["Личные рекорды", "Кол-во тренировок за период"],
+      botHelper.getStatOptions(),
       "typeOfAction"
     ); // Вынести ключ в енам ключей, использовать как элемент path в объекте юзера
   } catch (error) {

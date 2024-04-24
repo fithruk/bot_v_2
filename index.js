@@ -20,6 +20,9 @@ const {
   finishNewUserRegistration,
 } = require("./actions/createNewUserAction/createNewUserAction");
 const mongoose = require("mongoose");
+const {
+  personalBestAction,
+} = require("./actions/statisticActions/personalBestAction/personalBestAction");
 
 require("dotenv").config();
 
@@ -90,6 +93,7 @@ const functionsEnum = {
   createNewSet: botHelper.getButtonsLabelsForNewSetCommand()[0],
   removeExistSet: botHelper.getButtonsLabelsForNewSetCommand()[1],
   createNewUser: botHelper.getstartOptions()[0],
+  personalBests: botHelper.getStatOptions()[0],
 };
 
 bot.action(new RegExp(), async (ctx) => {
@@ -108,7 +112,6 @@ bot.action(new RegExp(), async (ctx) => {
     currentUser.updatePath(typeOfAction); // Добавляет указание по какому пути должен идти скрипт
     const individualScriptPointer = currentUser.path.split("/")[0];
 
-    //Вот здесь надо отрефакторить
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
         const error1 = await addNewSetAction(ctx);
@@ -120,6 +123,9 @@ bot.action(new RegExp(), async (ctx) => {
         break;
       case functionsEnum.createNewUser:
         createNewUserAction(ctx);
+        break;
+      case functionsEnum.personalBests:
+        await personalBestAction(ctx);
         break;
 
       default:
