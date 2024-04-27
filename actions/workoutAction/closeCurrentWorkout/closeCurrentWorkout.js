@@ -12,6 +12,8 @@ const closeWorkoutAction = async (ctx) => {
     if (status != 200) {
       return new Error("Somethink went wrong");
     }
+  } else {
+    return new Error("UserSession is undefined");
   }
 };
 
