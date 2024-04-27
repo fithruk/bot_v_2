@@ -54,6 +54,16 @@ class ApiService {
     return data;
   }
 
+  async closeCurrentTraining(userName) {
+    const { data, status } = await axios.post(
+      `${process.env.API_ADRESS}/trainings/closeTrainingSession`,
+      {
+        userName,
+      }
+    );
+    return { data, status };
+  }
+
   async updateTrainingPerfomance(userName, exercise, countOfReps, weight) {
     const { data } = await axios.put(
       `${process.env.API_ADRESS}/trainings/updateTrainingPerfomance`,

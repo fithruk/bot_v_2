@@ -4,7 +4,7 @@ const { User } = require("../user/user");
 const userState = require("../userState/userState");
 
 const regAnswers = { name: null, email: null, phone: null };
-//Here...
+
 const startCommand = async (ctx) => {
   const userName = botHelper.checkUserName(ctx);
   const currentUser = userState.findUser(userName);

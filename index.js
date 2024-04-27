@@ -1,5 +1,5 @@
 const { Telegraf, Markup } = require("telegraf");
-const { newTrainingCommand } = require("./commands/newTraining");
+const { workoutsCommand } = require("./commands/workouts");
 const { newSetCommand } = require("./commands/newSet");
 const { startCommand } = require("./commands/start");
 const { getStat } = require("./commands/getStat");
@@ -19,6 +19,12 @@ const {
   createNewUserAction,
   finishNewUserRegistration,
 } = require("./actions/createNewUserAction/createNewUserAction");
+const {
+  createNewWorkoutAction,
+} = require("./actions/workoutAction/createNewWorkout/createNewWorkout");
+const {
+  closeWorkoutAction,
+} = require("./actions/workoutAction/closeCurrentWorkout/closeCurrentWorkout");
 const mongoose = require("mongoose");
 const {
   personalBestAction,
@@ -49,10 +55,10 @@ bot.start(async (ctx) => {
   }
 });
 
-bot.command("newTraining", async (ctx) => {
+bot.command("workouts", async (ctx) => {
   try {
     await botHelper.historyDestroyer(ctx);
-    await newTrainingCommand(ctx);
+    await workoutsCommand(ctx);
   } catch (error) {
     console.log("Error in 'bot.command'newTraining'");
     console.log(error.message);
@@ -90,6 +96,8 @@ bot.help(async (ctx) => {
 
 // Тип функций приложения, типа ENUM
 const functionsEnum = {
+  createNewWorkout: botHelper.getWorkoutOptions()[0],
+  closeCurrentWorkout: botHelper.getWorkoutOptions()[1],
   createNewSet: botHelper.getButtonsLabelsForNewSetCommand()[0],
   removeExistSet: botHelper.getButtonsLabelsForNewSetCommand()[1],
   createNewUser: botHelper.getstartOptions()[0],
@@ -113,6 +121,14 @@ bot.action(new RegExp(), async (ctx) => {
     const individualScriptPointer = currentUser.path.split("/")[0];
 
     switch (individualScriptPointer) {
+      case functionsEnum.createNewWorkout:
+        const error0 = await createNewWorkoutAction(ctx);
+        if (error0) throw error0;
+        break;
+      case functionsEnum.closeCurrentWorkout:
+        const error01 = await closeWorkoutAction(ctx);
+        if (error01) throw error01;
+        break;
       case functionsEnum.createNewSet:
         const error1 = await addNewSetAction(ctx);
         if (error1) throw error1;

@@ -36,6 +36,14 @@ class BotHelper {
 
   #statOptions = ["Личные рекорды", "Тренировки за период", " ", " ", " "];
 
+  #workoutOptions = [
+    "Начать новую тренировку '🏋'",
+    "Закончить тренировку '🪫'",
+    "Посмотреть предыдущие '📊'",
+    "",
+    "",
+  ];
+
   getstartOptions = () => {
     return this.#startOptions;
   };
@@ -58,6 +66,10 @@ class BotHelper {
 
   getStatOptions = () => {
     return this.#statOptions;
+  };
+
+  getWorkoutOptions = () => {
+    return this.#workoutOptions;
   };
 
   checkUserName = (ctx) => {
@@ -101,7 +113,7 @@ class BotHelper {
     keyForCallback
   ) => {
     // if (buttonsArray.length > 5) buttonsArray = sliseArray(buttonsArray);
-
+    await this.historyDestroyer(ctx);
     await ctx.replyWithHTML(
       titleQuestion,
       Markup.inlineKeyboard(
