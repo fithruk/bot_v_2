@@ -125,21 +125,26 @@ bot.action(new RegExp(), async (ctx) => {
         const error0 = await createNewWorkoutAction(ctx);
         if (error0) throw error0;
         break;
+
       case functionsEnum.closeCurrentWorkout:
         const error01 = await closeWorkoutAction(ctx);
         if (error01) throw error01;
         break;
+
       case functionsEnum.createNewSet:
         const error1 = await addNewSetAction(ctx);
         if (error1) throw error1;
         break;
+
       case functionsEnum.removeExistSet:
         const error2 = await removeExistingSetAction(ctx);
         if (error2) throw error2;
         break;
+
       case functionsEnum.createNewUser:
         createNewUserAction(ctx);
         break;
+
       case functionsEnum.personalBests:
         await personalBestAction(ctx);
         break;
@@ -181,6 +186,7 @@ bot.on("message", async (ctx) => {
           await finishNewSetAction(ctx, currentUser, message);
         }
         break;
+
       case functionsEnum.removeExistSet:
         const error = await finishRemoveSetAction(ctx, message);
         if (error) throw error;
@@ -189,6 +195,7 @@ bot.on("message", async (ctx) => {
       case functionsEnum.createNewUser:
         await finishNewUserRegistration(ctx, message);
         break;
+
       default:
         currentUser.resetPath();
         await botHelper.historyDestroyer(ctx);
