@@ -123,6 +123,18 @@ class ApiService {
     );
     return data;
   }
+
+  async getAbsRecords(userName) {
+    const { data, status } = await axios.get(
+      `${process.env.API_ADRESS}/analitics/absRecords`,
+      {
+        params: {
+          userName,
+        },
+      }
+    );
+    return data;
+  }
 }
 
 const apiService = new ApiService();
