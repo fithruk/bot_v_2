@@ -146,7 +146,8 @@ bot.action(new RegExp(), async (ctx) => {
         break;
 
       case functionsEnum.personalBests:
-        await personalBestAction(ctx);
+        const error4 = await personalBestAction(ctx);
+        if (error4) throw error4;
         break;
 
       default:

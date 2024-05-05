@@ -133,7 +133,8 @@ class ApiService {
         },
       }
     );
-    return data;
+
+    return { data, status };
   }
 }
 
