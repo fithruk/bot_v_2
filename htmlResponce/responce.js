@@ -29,6 +29,13 @@ class HtmlResponce {
 <b>Пример 2-3</b>`;
     this.ctx.replyWithHTML(fullResponce);
   }
+
+  async absRecordsResponce(dataArrFromDB) {
+    if (!Array.isArray(dataArrFromDB))
+      return console.log("dataArrFromDB mast be an array, removeResponce");
+
+    // Here....
+  }
 }
 
 module.exports = HtmlResponce;
