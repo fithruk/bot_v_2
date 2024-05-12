@@ -1,4 +1,6 @@
 const moment = require("moment");
+const botHelper = require("../../../helpers/helpers");
+const { apiService } = require("../../../apiService/apiService");
 
 const workoutByPeriodAction = async (ctx) => {
   try {
@@ -19,10 +21,23 @@ const finishWorkoutByPeriodAction = async (ctx, message) => {
     )
   )
     return ctx.reply("Неверный формат даты");
-  //HEre...
+
+  const userName = botHelper.checkUserName(ctx);
   let [dateStart, dateEnd] = message.split("-");
   dateStart = moment(dateStart, "DD/MM/YYYY").format("YYYY.MM.DD");
   dateEnd = moment(dateEnd, "DD/MM/YYYY").format("YYYY.MM.DD");
+  try {
+    const data = await apiService.getWorkoutByPeriod(
+      userName,
+      dateStart,
+      dateEnd
+    );
+    //Here...
+    console.log(data);
+  } catch (error) {
+    console.log("error in finishWorkoutByPeriodAction");
+    return new Error(error.message);
+  }
 };
 
 module.exports = { workoutByPeriodAction, finishWorkoutByPeriodAction };

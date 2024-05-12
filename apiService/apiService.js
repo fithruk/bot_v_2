@@ -136,6 +136,19 @@ class ApiService {
 
     return { data, status };
   }
+
+  async getWorkoutByPeriod(userName, dateStart, dateEnd) {
+    const { data, status } = await axios.post(
+      `${process.env.API_ADRESS}/analitics/workoutByPeriod`,
+      {
+        userName,
+        dateStart,
+        dateEnd,
+      }
+    );
+
+    return { data, status };
+  }
 }
 
 const apiService = new ApiService();
