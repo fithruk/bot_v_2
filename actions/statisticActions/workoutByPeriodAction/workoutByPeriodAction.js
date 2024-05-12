@@ -11,7 +11,18 @@ const workoutByPeriodAction = async (ctx) => {
 };
 
 const finishWorkoutByPeriodAction = async (ctx, message) => {
-  console.log(message);
+  if (
+    !(
+      typeof message == "string" &&
+      message.includes("/") &&
+      message.includes("-")
+    )
+  )
+    return ctx.reply("Неверный формат даты");
+  //HEre...
+  let [dateStart, dateEnd] = message.split("-");
+  dateStart = moment(dateStart, "DD/MM/YYYY").format("YYYY.MM.DD");
+  dateEnd = moment(dateEnd, "DD/MM/YYYY").format("YYYY.MM.DD");
 };
 
 module.exports = { workoutByPeriodAction, finishWorkoutByPeriodAction };
