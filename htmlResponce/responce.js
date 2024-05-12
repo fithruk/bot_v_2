@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 class HtmlResponce {
   constructor(ctx) {
     this.ctx = ctx;
@@ -34,7 +36,17 @@ class HtmlResponce {
     if (!Array.isArray(dataArrFromDB))
       return console.log("dataArrFromDB mast be an array, removeResponce");
 
-    // Here....
+    const htmlMessage = dataArrFromDB
+      .map(({ _id, maxWeight, date }) => {
+        return `<b>Упражнение: \n${
+          _id.exerciseName
+        }</b>:\nПоднятый вес - ${maxWeight}, \nДата - ${moment(date).format(
+          "MMM Do YYYY"
+        )}`;
+      })
+      .join("\n\n");
+
+    this.ctx.replyWithHTML(`<b>Рекорды :</b>\n${htmlMessage}`);
   }
 }
 

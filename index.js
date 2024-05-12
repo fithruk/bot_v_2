@@ -29,6 +29,10 @@ const mongoose = require("mongoose");
 const {
   personalBestAction,
 } = require("./actions/statisticActions/personalBestAction/personalBestAction");
+const {
+  workoutByPeriodAction,
+  finishWorkoutByPeriodAction,
+} = require("./actions/statisticActions/workoutByPeriodAction/workoutByPeriodAction");
 
 require("dotenv").config();
 
@@ -102,6 +106,7 @@ const functionsEnum = {
   removeExistSet: botHelper.getButtonsLabelsForNewSetCommand()[1],
   createNewUser: botHelper.getstartOptions()[0],
   personalBests: botHelper.getStatOptions()[0],
+  workoutByPeriod: botHelper.getStatOptions()[1],
 };
 
 bot.action(new RegExp(), async (ctx) => {
@@ -120,6 +125,7 @@ bot.action(new RegExp(), async (ctx) => {
     currentUser.updatePath(typeOfAction); // Добавляет указание по какому пути должен идти скрипт
     const individualScriptPointer = currentUser.path.split("/")[0];
 
+    console.log(individualScriptPointer);
     switch (individualScriptPointer) {
       case functionsEnum.createNewWorkout:
         const error0 = await createNewWorkoutAction(ctx);
@@ -150,6 +156,11 @@ bot.action(new RegExp(), async (ctx) => {
         if (error4) throw error4;
         break;
 
+      case functionsEnum.workoutByPeriod:
+        const error5 = await workoutByPeriodAction(ctx);
+        if (error5) throw error5;
+        break;
+
       default:
         currentUser.resetPath();
         await ctx.reply("Ошибка в логике, попробуйте еще раз");
@@ -178,6 +189,7 @@ bot.on("message", async (ctx) => {
     const individualScriptPointer = currentUser.path.split("/")[0];
     if (!individualScriptPointer) return await botHelper.historyDestroyer(ctx);
 
+    console.log(individualScriptPointer);
     switch (individualScriptPointer) {
       case functionsEnum.createNewSet:
         if (Object.entries(currentUser.answers).every((answ) => answ != null)) {
@@ -195,6 +207,10 @@ bot.on("message", async (ctx) => {
 
       case functionsEnum.createNewUser:
         await finishNewUserRegistration(ctx, message);
+        break;
+
+      case functionsEnum.workoutByPeriod:
+        await finishWorkoutByPeriodAction(ctx, message);
         break;
 
       default:
