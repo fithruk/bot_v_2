@@ -36,8 +36,7 @@ const finishWorkoutByPeriodAction = async (ctx, message) => {
 
     await new HtmlResponce(ctx).workoutByPeriodResponce(data.data);
   } catch (error) {
-    console.log(error.message);
-    console.log("error in finishWorkoutByPeriodAction");
+    console.log(error);
     return new Error(error.message);
   }
 };

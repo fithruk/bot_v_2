@@ -166,7 +166,7 @@ bot.action(new RegExp(), async (ctx) => {
         break;
     }
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
     console.log("Error in bot.action(new RegExp()");
     await ctx.reply(error.message);
   }
@@ -180,7 +180,6 @@ bot.on("message", async (ctx) => {
       throw new Error(
         "Незарегистрированный пользователь, выполните команду '/start'"
       );
-      return;
     }
 
     const message = ctx.message.text;
