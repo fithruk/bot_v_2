@@ -3,6 +3,8 @@ const moment = require("moment");
 class HtmlResponce {
   constructor(ctx) {
     this.ctx = ctx;
+    this.maxLength = 4000;
+    this.messages = 0;
   }
 
   async removeSetResponce(exerciseArray) {
@@ -47,6 +49,99 @@ class HtmlResponce {
       .join("\n\n");
 
     this.ctx.replyWithHTML(`<b>Рекорды :</b>\n${htmlMessage}`);
+  }
+
+  //   async workoutByPeriodResponce(workoutByPeriodArr) {
+  //     if (!Array.isArray(workoutByPeriodArr)) {
+  //       return console.log("workoutByPeriodArr must be an array");
+  //     }
+
+  //     const htmlMessage = workoutByPeriodArr
+  //       .map(({ dateOfStart, exercises }) => {
+  //         return `<b>Дата: ${moment(dateOfStart).format("MMM Do YYYY")}</b>\n
+  // ${exercises
+  //   .map(
+  //     ({
+  //       exercise,
+  //       numberOfSet,
+  //       countOfReps,
+  //       weight,
+  //     }) => `• <b>Упражнение:</b> ${exercise}:
+  //                 <b>Номер подхода:</b> ${numberOfSet}
+  //                 <b>Количество повторений:</b> ${countOfReps}
+  //                 <b>Вес снаряда:</b> ${weight}
+  //               `
+  //   )
+  //   .join("\n")}
+  //         `;
+  //       })
+  //       .join("\n\n");
+
+  //     if (htmlMessage.length > this.maxLength) {
+  //       let replyCounter = 1;
+  //       let startPos = 0;
+  //       this.messages = Math.ceil(htmlMessage.length / this.maxLength);
+  //       console.log(startPos + " startPos");
+  //       while (replyCounter <= this.messages) {
+  //         await this.ctx.replyWithHTML(
+  //           htmlMessage.slice(startPos, this.maxLength)
+  //         );
+  //         startPos += this.maxLength;
+  //         replyCounter += 1;
+  //       }
+  //     } else {
+  //       await this.ctx.replyWithHTML(htmlMessage);
+  //     }
+  //   }
+  async workoutByPeriodResponce(workoutByPeriodArr) {
+    if (!Array.isArray(workoutByPeriodArr)) {
+      return console.log("workoutByPeriodArr must be an array");
+    }
+
+    const htmlMessage = workoutByPeriodArr
+      .map(({ dateOfStart, exercises }) => {
+        return `Дата: ${moment(dateOfStart).format("MMM Do YYYY")}\n
+${exercises
+  .map(
+    ({
+      exercise,
+      numberOfSet,
+      countOfReps,
+      weight,
+    }) => `• Упражнение: ${exercise}:
+                Номер подхода: ${numberOfSet}
+                Количество повторений: ${countOfReps}
+                Вес снаряда: ${weight} \n`
+  )
+  .join("\n")}
+        `;
+      })
+      .join("\n\n");
+
+    const maxLength = this.maxLength;
+
+    if (htmlMessage.length > maxLength) {
+      let replyCounter = 1;
+      let startPos = 0;
+      console.log(replyCounter);
+      this.messages = Math.ceil(htmlMessage.length / maxLength);
+
+      while (replyCounter <= this.messages) {
+        const messagePart = htmlMessage.substring(
+          startPos,
+          startPos + maxLength
+        );
+
+        if (messagePart.trim().length > 0) {
+          await this.ctx.replyWithHTML(messagePart);
+        }
+
+        startPos += maxLength;
+        replyCounter += 1;
+      }
+    } else {
+      await this.ctx.replyWithHTML(htmlMessage);
+    }
   }
 }
 

@@ -32,7 +32,7 @@ const {
 const {
   workoutByPeriodAction,
   finishWorkoutByPeriodAction,
-} = require("./actions/statisticActions/workoutByPeriodAction/workoutByPeriodAction");
+} = require("./actions/workoutAction/workoutByPeriodAction/workoutByPeriodAction");
 
 require("dotenv").config();
 
@@ -106,7 +106,7 @@ const functionsEnum = {
   removeExistSet: botHelper.getButtonsLabelsForNewSetCommand()[1],
   createNewUser: botHelper.getstartOptions()[0],
   personalBests: botHelper.getStatOptions()[0],
-  workoutByPeriod: botHelper.getStatOptions()[1],
+  workoutByPeriod: botHelper.getWorkoutOptions()[2],
 };
 
 bot.action(new RegExp(), async (ctx) => {
@@ -119,7 +119,6 @@ bot.action(new RegExp(), async (ctx) => {
       throw new Error(
         "Незарегистрированный пользователь, выполните команду '/start'"
       );
-      return;
     }
 
     currentUser.updatePath(typeOfAction); // Добавляет указание по какому пути должен идти скрипт

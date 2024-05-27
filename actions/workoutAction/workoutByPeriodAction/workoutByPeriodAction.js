@@ -1,6 +1,7 @@
 const moment = require("moment");
 const botHelper = require("../../../helpers/helpers");
 const { apiService } = require("../../../apiService/apiService");
+const HtmlResponce = require("../../../htmlResponce/responce");
 
 const workoutByPeriodAction = async (ctx) => {
   try {
@@ -32,9 +33,10 @@ const finishWorkoutByPeriodAction = async (ctx, message) => {
       dateStart,
       dateEnd
     );
-    //Here...
-    console.log(data);
+
+    await new HtmlResponce(ctx).workoutByPeriodResponce(data.data);
   } catch (error) {
+    console.log(error.message);
     console.log("error in finishWorkoutByPeriodAction");
     return new Error(error.message);
   }
