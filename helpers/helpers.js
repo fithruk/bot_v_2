@@ -1,4 +1,5 @@
 const { Markup } = require("telegraf");
+const userState = require("../userState/userState");
 
 class BotHelper {
   #startOptions = [
@@ -38,6 +39,7 @@ class BotHelper {
 
   #workoutOptions = [
     "Начать новую тренировку '🏋'",
+    "Текущая тренировка '💪'",
     "Закончить тренировку '🪫'",
     "Тренировки за период 📅",
     "",
@@ -139,6 +141,11 @@ class BotHelper {
         break;
       }
     }
+  };
+
+  resetUserPath = (userName) => {
+    const currentUser = userState.findUser(userName);
+    currentUser.resetPath();
   };
 }
 

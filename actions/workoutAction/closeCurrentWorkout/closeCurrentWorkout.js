@@ -1,11 +1,9 @@
 const { apiService } = require("../../../apiService/apiService");
-const userState = require("../../../userState/userState");
 const botHelper = require("../../../helpers/helpers");
 
 const closeWorkoutAction = async (ctx) => {
   const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
-  const currentUser = userState.findUser(userName);
-  currentUser.resetPath();
+  botHelper.resetUserPath(userName);
   try {
     const { currentUserSession } = await apiService.getCurrentTraining(
       userName

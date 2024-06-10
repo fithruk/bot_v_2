@@ -35,6 +35,7 @@ const finishWorkoutByPeriodAction = async (ctx, message) => {
     );
 
     await new HtmlResponce(ctx).workoutByPeriodResponce(data.data);
+    botHelper.resetUserPath(userName);
   } catch (error) {
     console.log(error);
     return new Error(error.message);

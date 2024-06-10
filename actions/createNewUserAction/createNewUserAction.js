@@ -11,7 +11,7 @@ const createNewUserAction = async (ctx) => {
   const { isExist } = await apiService.findUser(userName);
 
   if (isExist) {
-    currentUser.resetPath();
+    botHelper.resetUserPath(userName);
     return ctx.reply(`Юзер никнеймом ${userName.split("-")[0]} уже создан`);
   }
 
@@ -101,7 +101,7 @@ const finishNewUserRegistration = async (ctx, message) => {
         currentUser.answers
       );
 
-      currentUser.resetPath();
+      botHelper.resetUserPath(userName);
       currentUser.resetUnswers();
       currentUser.setQuestions(botHelper.getQuestionTitlesForNewSet());
       currentUser.setUnswers(botHelper.getAnswersForNewSet());

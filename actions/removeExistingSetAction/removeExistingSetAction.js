@@ -31,7 +31,7 @@ const removeExistingSetAction = async (ctx) => {
 
     await botHelper.historyDestroyer(ctx);
     if (exerciseArray.length == 0) {
-      currentUser.resetPath();
+      botHelper.resetUserPath(userName);
       return new Error("В текущей тренировке еще ничего не было выполнено.");
     }
 
@@ -53,15 +53,15 @@ const finishRemoveSetAction = async (ctx, message) => {
   const [numOfExercise, numOfSet] = message.split("-");
 
   const id = currentUser.exercisesForcedUpdate(+numOfExercise, +numOfSet);
-  console.log(id);
+
   if (id) {
     try {
       await apiService.removeSet(userName, id);
-      currentUser.resetPath();
+      botHelper.resetUserPath(userName);
       await botHelper.historyDestroyer(ctx);
       ctx.reply("Подход успешно удален.");
     } catch (error) {
-      currentUser.resetPath();
+      botHelper.resetUserPath(userName);
       console.log("Error during removeExistingSetAction");
       console.log(error.message);
     }

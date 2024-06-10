@@ -33,6 +33,9 @@ const {
   workoutByPeriodAction,
   finishWorkoutByPeriodAction,
 } = require("./actions/workoutAction/workoutByPeriodAction/workoutByPeriodAction");
+const {
+  getCurrentWorkoutAction,
+} = require("./actions/workoutAction/currentWorkoutAction/currentWorkoutAction");
 
 require("dotenv").config();
 
@@ -101,7 +104,8 @@ bot.help(async (ctx) => {
 // Тип функций приложения, типа ENUM
 const functionsEnum = {
   createNewWorkout: botHelper.getWorkoutOptions()[0],
-  closeCurrentWorkout: botHelper.getWorkoutOptions()[1],
+  currentWorkout: botHelper.getWorkoutOptions()[1],
+  closeCurrentWorkout: botHelper.getWorkoutOptions()[2],
   createNewSet: botHelper.getButtonsLabelsForNewSetCommand()[0],
   removeExistSet: botHelper.getButtonsLabelsForNewSetCommand()[1],
   createNewUser: botHelper.getstartOptions()[0],
@@ -129,6 +133,10 @@ bot.action(new RegExp(), async (ctx) => {
       case functionsEnum.createNewWorkout:
         const error0 = await createNewWorkoutAction(ctx);
         if (error0) throw error0;
+        break;
+      case functionsEnum.currentWorkout:
+        const error00 = await getCurrentWorkoutAction(ctx);
+        if (error00) throw error00;
         break;
 
       case functionsEnum.closeCurrentWorkout:
@@ -161,7 +169,7 @@ bot.action(new RegExp(), async (ctx) => {
         break;
 
       default:
-        currentUser.resetPath();
+        botHelper.resetUserPath(username);
         await ctx.reply("Ошибка в логике, попробуйте еще раз");
         break;
     }
@@ -212,7 +220,7 @@ bot.on("message", async (ctx) => {
         break;
 
       default:
-        currentUser.resetPath();
+        botHelper.resetUserPath(userName);
         await botHelper.historyDestroyer(ctx);
         break;
     }

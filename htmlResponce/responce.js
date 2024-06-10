@@ -56,6 +56,10 @@ class HtmlResponce {
       return console.log("workoutByPeriodArr must be an array");
     }
 
+    if (workoutByPeriodArr.length === 0) {
+      await this.ctx.reply("Отсутствуют данные для вывода.");
+    }
+
     const htmlMessage = workoutByPeriodArr
       .map(({ dateOfStart, exercises }) => {
         return `Дата: ${moment(dateOfStart).format("MMM Do YYYY")}\n
@@ -66,7 +70,7 @@ ${exercises
       numberOfSet,
       countOfReps,
       weight,
-    }) => `• Упражнение: ${exercise}:
+    }) => `• Упражнение:\n${exercise}:
                 Номер подхода: ${numberOfSet}
                 Количество повторений: ${countOfReps}
                 Вес снаряда: ${weight} \n`

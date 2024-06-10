@@ -1,13 +1,12 @@
 const { apiService } = require("../../../apiService/apiService");
-const userState = require("../../../userState/userState");
 const botHelper = require("../../../helpers/helpers");
 
 const createNewWorkoutAction = async (ctx) => {
   const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
 
   const responce = await apiService.initialNewTraining(userName);
-  const currentUser = userState.findUser(userName);
-  currentUser.resetPath();
+  botHelper.resetUserPath(userName);
+
   switch (responce.status) {
     case "succes":
       ctx.reply("Новая тренировка успешно создана");
