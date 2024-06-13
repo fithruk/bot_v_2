@@ -107,26 +107,26 @@ class BotHelper {
   //   return resArr;
   // };
 
-  markupReplier = async (
-    ctx,
-    titleQuestion = "",
-    buttonsArray = [],
-    keyForCallback
-  ) => {
-    // if (buttonsArray.length > 5) buttonsArray = sliseArray(buttonsArray);
-    await this.historyDestroyer(ctx);
-    await ctx.replyWithHTML(
-      titleQuestion,
-      Markup.inlineKeyboard(
-        buttonsArray.map((buttonLabel) => [
-          Markup.button.callback(
-            buttonLabel,
-            this.callbackCreator(keyForCallback, buttonLabel)
-          ),
-        ])
-      )
-    );
-  };
+  // markupReplier = async (
+  //   ctx,
+  //   titleQuestion = "",
+  //   buttonsArray = [],
+  //   keyForCallback
+  // ) => {
+  //   // if (buttonsArray.length > 5) buttonsArray = sliseArray(buttonsArray);
+  //   await this.historyDestroyer(ctx);
+  //   await ctx.replyWithHTML(
+  //     titleQuestion,
+  //     Markup.inlineKeyboard(
+  //       buttonsArray.map((buttonLabel) => [
+  //         Markup.button.callback(
+  //           buttonLabel,
+  //           this.callbackCreator(keyForCallback, buttonLabel)
+  //         ),
+  //       ])
+  //     )
+  //   );
+  // };
 
   historyDestroyer = async (ctx) => {
     const messageId = ctx.callbackQuery

@@ -1,10 +1,12 @@
 const moment = require("moment");
+const Communicator = require("../communicator/communicator");
 
 class HtmlResponce {
   constructor(ctx) {
     this.ctx = ctx;
     this.maxLength = 4000;
     this.messages = 0;
+    this.communicator = new Communicator(this.ctx);
   }
 
   async removeSetResponce(exerciseArray) {
@@ -31,7 +33,7 @@ class HtmlResponce {
 Введите данные о подходе который нужно удалить,в формате : Номер упражнения: [Число]-Номер подхода :[число]\n
     
 <b>Пример 2-3</b>`;
-    this.ctx.replyWithHTML(fullResponce);
+    this.communicator.replyWithHTML(fullResponce);
   }
 
   async absRecordsResponce(dataArrFromDB) {
@@ -48,7 +50,7 @@ class HtmlResponce {
       })
       .join("\n\n");
 
-    this.ctx.replyWithHTML(`<b>Рекорды :</b>\n${htmlMessage}`);
+    this.communicator.replyWithHTML(`<b>Рекорды :</b>\n${htmlMessage}`);
   }
 
   async workoutByPeriodResponce(workoutByPeriodArr) {
@@ -57,7 +59,7 @@ class HtmlResponce {
     }
 
     if (workoutByPeriodArr.length === 0) {
-      await this.ctx.reply("Отсутствуют данные для вывода.");
+      await this.communicator.reply("Отсутствуют данные для вывода.");
     }
 
     const htmlMessage = workoutByPeriodArr
@@ -95,14 +97,14 @@ ${exercises
         );
 
         if (messagePart.trim().length > 0) {
-          await this.ctx.replyWithHTML(messagePart);
+          await this.communicator.replyWithHTML(messagePart);
         }
 
         startPos += maxLength;
         replyCounter += 1;
       }
     } else {
-      await this.ctx.replyWithHTML(htmlMessage);
+      await this.communicator.replyWithHTML(htmlMessage);
     }
   }
 }

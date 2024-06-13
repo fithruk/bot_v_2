@@ -72,11 +72,15 @@ class User {
     if (typeof numOfExercise != "number" || typeof numOfSet != "number")
       return console.log("numOfExercise, numOfSet must be a number");
 
-    const currentExercises = this.getCurrentExercises();
-    const exersise = [...currentExercises[numOfExercise - 1][1]];
-    const set = exersise.find((ex) => ex.numberOfSet == numOfSet);
-    this.resetCurrentExercises();
-    return set && set._id.toString();
+    try {
+      const currentExercises = this.getCurrentExercises();
+      const exersise = [...currentExercises[numOfExercise - 1][1]];
+      const set = exersise.find((ex) => ex.numberOfSet == numOfSet);
+      this.resetCurrentExercises();
+      return set && set._id.toString();
+    } catch (error) {
+      return null;
+    }
   };
 }
 

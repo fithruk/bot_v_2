@@ -1,10 +1,12 @@
 const botHelper = require("../../helpers/helpers");
+const Communicator = require("../../communicator/communicator");
 const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
 
 const regAnswers = { name: null, email: null, phone: null };
 
 const createNewUserAction = async (ctx) => {
+  const communicator = new Communicator(ctx);
   const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
   const currentUser = userState.findUser(userName);
 
@@ -12,14 +14,16 @@ const createNewUserAction = async (ctx) => {
 
   if (isExist) {
     botHelper.resetUserPath(userName);
-    return ctx.reply(`Юзер никнеймом ${userName.split("-")[0]} уже создан`);
+    return communicator.reply(
+      `Юзер никнеймом ${userName.split("-")[0]} уже создан`
+    );
   }
 
   currentUser.setUnswers(regAnswers);
 
   switch (currentUser.label) {
     case botHelper.getRegistrationQuestions()[0]:
-      await ctx.reply(currentUser.label);
+      await communicator.reply(currentUser.label);
 
       break;
 
@@ -64,33 +68,34 @@ function validatePhoneNumber(phoneNumber) {
 const finishNewUserRegistration = async (ctx, message) => {
   const userName = botHelper.checkUserName(ctx);
   const currentUser = userState.findUser(userName);
+  const communicator = new Communicator(ctx);
   await botHelper.historyDestroyer(ctx);
 
   switch (currentUser.label) {
     case botHelper.getRegistrationQuestions()[0]:
       const [firstName, lastName] = message.split(" ");
       if (!firstName || !lastName)
-        return ctx.reply("Введите имя и фамилию в два слова!");
+        return communicator.reply("Введите имя и фамилию в два слова!");
       if (!isNaN(+firstName) || !isNaN(+lastName)) {
-        return ctx.reply(
+        return communicator.reply(
           "Введите имя и фамилию буквами, только если вы не r2-d2)"
         );
       }
 
       saveUserRegStepToStore(regAnswerKeysEnam, currentUser, message);
-      await ctx.reply(currentUser.label);
+      await communicator.reply(currentUser.label);
       break;
     case botHelper.getRegistrationQuestions()[1]:
       if (!validateEmail(message))
-        return ctx.reply(
+        return communicator.reply(
           "Недействительный адрес электронной почты.Повторите потытку и введите валидный адрес!"
         );
       saveUserRegStepToStore(regAnswerKeysEnam, currentUser, message);
-      await ctx.reply(currentUser.label);
+      await communicator.reply(currentUser.label);
       break;
     case botHelper.getRegistrationQuestions()[2]:
       if (!validatePhoneNumber(message)) {
-        return ctx.reply(
+        return communicator.reply(
           "Введите валидный номер телефона в указанном формате: 380XXXXXXXX"
         );
       }
@@ -106,7 +111,7 @@ const finishNewUserRegistration = async (ctx, message) => {
       currentUser.setQuestions(botHelper.getQuestionTitlesForNewSet());
       currentUser.setUnswers(botHelper.getAnswersForNewSet());
       currentUser.resetCurrentLabel();
-      await ctx.reply(response);
+      await communicator.reply(response);
       break;
 
     default:

@@ -1,16 +1,17 @@
 const { apiService } = require("../apiService/apiService");
-
+const Communicator = require("../communicator/communicator");
 const botHelper = require("../helpers/helpers");
 
 const workoutsCommand = async (ctx) => {
   const userName = botHelper.checkUserName(ctx);
-
+  const communicator = new Communicator(ctx);
   const { isExist } = await apiService.findUser(userName);
   if (!isExist)
-    return ctx.reply("Необходима регистрация, выполните команду '/start'");
+    return communicator.reply(
+      "Необходима регистрация, выполните команду '/start'"
+    );
 
-  await botHelper.markupReplier(
-    ctx,
+  await communicator.markupReplier(
     "Выберите нужную опцию :",
     botHelper.getWorkoutOptions(),
     "typeOfAction"

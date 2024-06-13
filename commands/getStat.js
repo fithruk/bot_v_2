@@ -1,10 +1,10 @@
 const botHelper = require("../helpers/helpers");
-
+const Communicator = require("../communicator/communicator");
 const { apiService } = require("../apiService/apiService");
 
 const getStat = async (ctx) => {
   const userName = botHelper.checkUserName(ctx);
-
+  const communicator = new Communicator(ctx);
   try {
     const { isExist } = await apiService.findUser(userName);
 
@@ -12,8 +12,7 @@ const getStat = async (ctx) => {
       return ctx.reply("Необходима регистрация, выполните команду '/start'");
 
     await botHelper.historyDestroyer(ctx);
-    await botHelper.markupReplier(
-      ctx,
+    await communicator.markupReplier(
       "Данные которые нужно загрузить :",
       botHelper.getStatOptions(),
       "typeOfAction"

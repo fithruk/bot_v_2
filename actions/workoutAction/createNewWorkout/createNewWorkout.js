@@ -1,19 +1,20 @@
 const { apiService } = require("../../../apiService/apiService");
 const botHelper = require("../../../helpers/helpers");
+const Communicator = require("../../../communicator/communicator");
 
 const createNewWorkoutAction = async (ctx) => {
   const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
-
+  const communicator = new Communicator(ctx);
   const responce = await apiService.initialNewTraining(userName);
   botHelper.resetUserPath(userName);
 
   switch (responce.status) {
     case "succes":
-      ctx.reply("Новая тренировка успешно создана");
+      communicator.reply("Новая тренировка успешно создана");
       return;
 
     case "exist":
-      ctx.reply("Актуальная тренировка еще не закончена");
+      communicator.reply("Актуальная тренировка еще не закончена");
       return;
 
     case "error":

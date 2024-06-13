@@ -6,6 +6,7 @@ const { getStat } = require("./commands/getStat");
 const { commands } = require("./help");
 const botHelper = require("./helpers/helpers");
 const userState = require("./userState/userState");
+const Communicator = require("./communicator/communicator");
 const {
   addNewSetAction,
   finishNewSetAction,
@@ -110,7 +111,7 @@ const functionsEnum = {
   removeExistSet: botHelper.getButtonsLabelsForNewSetCommand()[1],
   createNewUser: botHelper.getstartOptions()[0],
   personalBests: botHelper.getStatOptions()[0],
-  workoutByPeriod: botHelper.getWorkoutOptions()[2],
+  workoutByPeriod: botHelper.getWorkoutOptions()[3],
 };
 
 bot.action(new RegExp(), async (ctx) => {
@@ -129,6 +130,7 @@ bot.action(new RegExp(), async (ctx) => {
     const individualScriptPointer = currentUser.path.split("/")[0];
 
     console.log(individualScriptPointer);
+    console.log(functionsEnum.workoutByPeriod);
     switch (individualScriptPointer) {
       case functionsEnum.createNewWorkout:
         const error0 = await createNewWorkoutAction(ctx);
@@ -164,19 +166,24 @@ bot.action(new RegExp(), async (ctx) => {
         break;
 
       case functionsEnum.workoutByPeriod:
+        console.log("workoutByPeriodAction");
         const error5 = await workoutByPeriodAction(ctx);
         if (error5) throw error5;
         break;
 
       default:
         botHelper.resetUserPath(username);
-        await ctx.reply("Ошибка в логике, попробуйте еще раз");
+        await new Communicator(ctx).reply(
+          "Ошибка в логике, попробуйте еще раз"
+        );
+        //await ctx.reply("Ошибка в логике, попробуйте еще раз");
         break;
     }
   } catch (error) {
     console.error(error);
     console.log("Error in bot.action(new RegExp()");
-    await ctx.reply(error.message);
+    await new Communicator(ctx).reply(error.message);
+    //await ctx.reply(error.message);
   }
 });
 

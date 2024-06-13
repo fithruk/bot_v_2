@@ -1,5 +1,6 @@
 const { apiService } = require("../../apiService/apiService");
 const botHelper = require("../../helpers/helpers");
+const Communicator = require("../../communicator/communicator");
 const userState = require("../../userState/userState");
 const HtmlResponce = require("../../htmlResponce/responce");
 
@@ -42,6 +43,7 @@ const removeExistingSetAction = async (ctx) => {
 };
 
 const finishRemoveSetAction = async (ctx, message) => {
+  const communicator = new Communicator(ctx);
   if (!message.includes("-")) {
     console.log("Wrong data");
     return new Error(
@@ -53,20 +55,20 @@ const finishRemoveSetAction = async (ctx, message) => {
   const [numOfExercise, numOfSet] = message.split("-");
 
   const id = currentUser.exercisesForcedUpdate(+numOfExercise, +numOfSet);
-
   if (id) {
     try {
       await apiService.removeSet(userName, id);
       botHelper.resetUserPath(userName);
       await botHelper.historyDestroyer(ctx);
-      ctx.reply("Подход успешно удален.");
+      communicator.reply("Подход успешно удален.");
     } catch (error) {
       botHelper.resetUserPath(userName);
       console.log("Error during removeExistingSetAction");
       console.log(error.message);
     }
   } else {
-    ctx.reply("Нет такого подхода!");
+    communicator.reply("Нет такого подхода!");
+    botHelper.resetUserPath(userName);
   }
 };
 

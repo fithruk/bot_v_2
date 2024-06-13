@@ -1,4 +1,5 @@
 const botHelper = require("../../helpers/helpers");
+const Communicator = require("../../communicator/communicator");
 const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
 
@@ -20,7 +21,7 @@ const addNewSetAction = async (ctx) => {
   const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
   const callbackQuery = ctx.callbackQuery.data;
   const currentUser = userState.findUser(userName);
-
+  const communicator = new Communicator(ctx);
   const isApprovedCurrentLabel = (key, userUnswers) => {
     return userUnswers[key] != null ? true : false;
   };
@@ -35,9 +36,7 @@ const addNewSetAction = async (ctx) => {
   switch (currentUser.label) {
     case botHelper.getQuestionTitlesForNewSet()[0]:
       groupes = await apiService.getAllMusclesGroupes();
-
-      await botHelper.markupReplier(
-        ctx,
+      await communicator.markupReplier(
         currentUser.label,
         groupes,
         userAnswerKeysEnum.currentGroup
@@ -65,8 +64,7 @@ const addNewSetAction = async (ctx) => {
         currentUser.answers.currentGroup
       );
 
-      await botHelper.markupReplier(
-        ctx,
+      await communicator.markupReplier(
         currentUser.label,
         subGroup,
         userAnswerKeysEnum.subGroup
@@ -94,8 +92,7 @@ const addNewSetAction = async (ctx) => {
         currentUser.answers.subGroup
       );
 
-      await botHelper.markupReplier(
-        ctx,
+      await communicator.markupReplier(
         currentUser.label,
         exersicesBySubGroupe,
         userAnswerKeysEnum.exersice
@@ -118,8 +115,7 @@ const addNewSetAction = async (ctx) => {
         );
       }
 
-      await botHelper.markupReplier(
-        ctx,
+      await communicator.markupReplier(
         currentUser.label,
         countOfReps,
         userAnswerKeysEnum.countOfReps
@@ -141,7 +137,7 @@ const addNewSetAction = async (ctx) => {
         );
       }
 
-      await ctx.reply(currentUser.label);
+      await communicator.reply(currentUser.label);
       break;
 
     default:
@@ -150,6 +146,7 @@ const addNewSetAction = async (ctx) => {
 };
 
 const finishNewSetAction = async (ctx, currentUser, message) => {
+  const communicator = new Communicator(ctx);
   // Придумать как сбросить данные на последнем шаге, как нибудь потом
   try {
     const callback = botHelper.callbackCreator(
@@ -165,7 +162,7 @@ const finishNewSetAction = async (ctx, currentUser, message) => {
     );
     abortUserAnswerData(currentUser);
     await botHelper.historyDestroyer(ctx);
-    ctx.reply("Подход успешно сохранен!");
+    communicator.reply("Подход успешно сохранен!");
   } catch (error) {
     console.log("Error in bot.on'message', during finish exersice");
     console.log(error.message);
