@@ -9,7 +9,7 @@ class HtmlResponce {
     this.communicator = new Communicator(this.ctx);
   }
 
-  async removeSetResponce(exerciseArray) {
+  async removeSetResponce(exerciseArray, isDelete = true) {
     if (!Array.isArray(exerciseArray))
       return console.log("exerciseArray mast be an array, removeResponce");
 
@@ -27,12 +27,15 @@ class HtmlResponce {
       })
       .join("\n");
 
-    const fullResponce = `
+    const deletePromt =
+      "\n\nВведите данные о подходе который нужно удалить,в формате :\n Номер упражнения: [Число]-Номер подхода :[число]\n<b>Пример 2-3</b>";
+
+    let fullResponce = `
 Было выполнено:
-    ${exerciseArrayString}
-Введите данные о подходе который нужно удалить,в формате : Номер упражнения: [Число]-Номер подхода :[число]\n
-    
-<b>Пример 2-3</b>`;
+    ${exerciseArrayString}`;
+    if (isDelete) {
+      fullResponce += deletePromt;
+    }
     this.communicator.replyWithHTML(fullResponce);
   }
 
@@ -106,6 +109,14 @@ ${exercises
     } else {
       await this.communicator.replyWithHTML(htmlMessage);
     }
+  }
+
+  async currentWorlout(currentWorloutExersices) {
+    if (!Array.isArray(currentWorloutExersices))
+      return console.log(
+        "currentWorloutExersices mast be an array, removeResponce"
+      );
+    await this.removeSetResponce(currentWorloutExersices, false);
   }
 }
 

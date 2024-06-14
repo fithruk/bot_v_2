@@ -130,7 +130,7 @@ bot.action(new RegExp(), async (ctx) => {
     const individualScriptPointer = currentUser.path.split("/")[0];
 
     console.log(individualScriptPointer);
-    console.log(functionsEnum.workoutByPeriod);
+
     switch (individualScriptPointer) {
       case functionsEnum.createNewWorkout:
         const error0 = await createNewWorkoutAction(ctx);
