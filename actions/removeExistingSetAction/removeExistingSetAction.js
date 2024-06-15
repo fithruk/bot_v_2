@@ -53,8 +53,9 @@ const finishRemoveSetAction = async (ctx, message) => {
   const userName = botHelper.checkUserName(ctx);
   const currentUser = userState.findUser(userName);
   const [numOfExercise, numOfSet] = message.split("-");
-
-  const id = currentUser.exercisesForcedUpdate(+numOfExercise, +numOfSet);
+  console.log(numOfExercise, numOfSet);
+  const id = currentUser.exerciseIdFordelete(+numOfExercise, +numOfSet);
+  console.log(id + " id");
   if (id) {
     try {
       await apiService.removeSet(userName, id);
@@ -67,7 +68,10 @@ const finishRemoveSetAction = async (ctx, message) => {
       console.log(error.message);
     }
   } else {
-    communicator.reply("Нет такого подхода!");
+    communicator.reply(
+      "Нет такого подхода!\nПопробуйте повторить операцию сначала"
+    );
+    botHelper.historyDestroyer(ctx);
     botHelper.resetUserPath(userName);
   }
 };

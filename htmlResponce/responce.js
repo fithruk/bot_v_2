@@ -2,11 +2,12 @@ const moment = require("moment");
 const Communicator = require("../communicator/communicator");
 
 class HtmlResponce {
+  #ctx;
   constructor(ctx) {
-    this.ctx = ctx;
+    this.#ctx = ctx;
     this.maxLength = 4000;
     this.messages = 0;
-    this.communicator = new Communicator(this.ctx);
+    this.communicator = new Communicator(this.#ctx);
   }
 
   async removeSetResponce(exerciseArray, isDelete = true) {

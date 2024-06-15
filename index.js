@@ -103,7 +103,7 @@ bot.help(async (ctx) => {
 });
 
 // Тип функций приложения, типа ENUM
-const functionsEnum = {
+let functionsEnum = {
   createNewWorkout: botHelper.getWorkoutOptions()[0],
   currentWorkout: botHelper.getWorkoutOptions()[1],
   closeCurrentWorkout: botHelper.getWorkoutOptions()[2],
@@ -127,9 +127,11 @@ bot.action(new RegExp(), async (ctx) => {
     }
 
     currentUser.updatePath(typeOfAction); // Добавляет указание по какому пути должен идти скрипт
-    const individualScriptPointer = currentUser.path.split("/")[0];
-
-    console.log(individualScriptPointer);
+    const individualScriptPointer = Object.values(functionsEnum).includes(
+      currentUser.path.split("/")[1]
+    )
+      ? currentUser.path.split("/")[1]
+      : currentUser.path.split("/")[0];
 
     switch (individualScriptPointer) {
       case functionsEnum.createNewWorkout:
@@ -166,7 +168,6 @@ bot.action(new RegExp(), async (ctx) => {
         break;
 
       case functionsEnum.workoutByPeriod:
-        console.log("workoutByPeriodAction");
         const error5 = await workoutByPeriodAction(ctx);
         if (error5) throw error5;
         break;
@@ -176,14 +177,12 @@ bot.action(new RegExp(), async (ctx) => {
         await new Communicator(ctx).reply(
           "Ошибка в логике, попробуйте еще раз"
         );
-        //await ctx.reply("Ошибка в логике, попробуйте еще раз");
         break;
     }
   } catch (error) {
     console.error(error);
     console.log("Error in bot.action(new RegExp()");
     await new Communicator(ctx).reply(error.message);
-    //await ctx.reply(error.message);
   }
 });
 
@@ -199,7 +198,13 @@ bot.on("message", async (ctx) => {
 
     const message = ctx.message.text;
     const isNanMessage = Number.isNaN(+message);
-    const individualScriptPointer = currentUser.path.split("/")[0];
+    // Требует проверки...
+    const individualScriptPointer = Object.values(functionsEnum).includes(
+      currentUser.path.split("/")[1]
+    )
+      ? currentUser.path.split("/")[1]
+      : currentUser.path.split("/")[0];
+
     if (!individualScriptPointer) return await botHelper.historyDestroyer(ctx);
 
     console.log(individualScriptPointer);

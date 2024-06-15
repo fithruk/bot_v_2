@@ -1,8 +1,7 @@
 const { apiService } = require("../../../apiService/apiService");
 const botHelper = require("../../../helpers/helpers");
-const Communicator = require("../../../communicator/communicator");
 const HtmlResponce = require("../../../htmlResponce/responce");
-//Here...
+
 const getCurrentWorkoutAction = async (ctx) => {
   const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
   const htmlResponce = new HtmlResponce(ctx);

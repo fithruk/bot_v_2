@@ -68,7 +68,7 @@ class User {
     this.#exercises = [];
   };
 
-  exercisesForcedUpdate = (numOfExercise, numOfSet) => {
+  exerciseIdFordelete = (numOfExercise, numOfSet) => {
     if (typeof numOfExercise != "number" || typeof numOfSet != "number")
       return console.log("numOfExercise, numOfSet must be a number");
 
