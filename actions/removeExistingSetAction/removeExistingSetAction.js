@@ -55,7 +55,6 @@ const finishRemoveSetAction = async (ctx, message) => {
   const [numOfExercise, numOfSet] = message.split("-");
   console.log(numOfExercise, numOfSet);
   const id = currentUser.exerciseIdFordelete(+numOfExercise, +numOfSet);
-  console.log(id + " id");
   if (id) {
     try {
       await apiService.removeSet(userName, id);
