@@ -15,7 +15,9 @@ const closeWorkoutAction = async (ctx) => {
       if (status != 200) {
         return new Error("Somethink went wrong");
       }
-      communicator.reply(data);
+      //Here...
+      console.log(data);
+      communicator.reply("sd");
     } else {
       communicator.reply("У вас нет активной тренировки.");
     }
