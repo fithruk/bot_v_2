@@ -1,10 +1,10 @@
 const { apiService } = require("../../../apiService/apiService");
 const botHelper = require("../../../helpers/helpers");
-const Communicator = require("../../../communicator/communicator");
+const HtmlResponce = require("../../../htmlResponce/responce");
 
 const closeWorkoutAction = async (ctx) => {
   const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
-  const communicator = new Communicator(ctx);
+  const htmlResponce = new HtmlResponce(ctx);
   botHelper.resetUserPath(userName);
   try {
     const { currentUserSession } = await apiService.getCurrentTraining(
@@ -15,9 +15,7 @@ const closeWorkoutAction = async (ctx) => {
       if (status != 200) {
         return new Error("Somethink went wrong");
       }
-      //Here...
-      console.log(data);
-      communicator.reply("sd");
+      await htmlResponce.reportOfFinishedWorkout(data);
     } else {
       communicator.reply("У вас нет активной тренировки.");
     }
