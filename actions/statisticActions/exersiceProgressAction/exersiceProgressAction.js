@@ -115,6 +115,7 @@ const exersiceProgressAction = async (ctx) => {
       //Here...
       const [_, groupe, subGroupe, exersice] = currentUser.path.split("/");
       const exersiceSring = `${groupe} - ${subGroupe} - ${exersice}`;
+      communicator.reply("Data processing...");
       await apiService.getStatByExersice(userName, exersiceSring);
       break;
   }
