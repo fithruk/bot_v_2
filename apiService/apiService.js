@@ -150,6 +150,18 @@ class ApiService {
 
     return { data, status };
   }
+
+  async getStatByExersice(userName, exersiceSring) {
+    const { data, status } = await axios.post(
+      `${process.env.API_ADRESS}/analitics/statByExersice`,
+      {
+        userName,
+        exersiceSring,
+      }
+    );
+
+    return { data, status };
+  }
 }
 
 const apiService = new ApiService();

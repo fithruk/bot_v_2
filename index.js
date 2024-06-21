@@ -31,6 +31,9 @@ const {
   personalBestAction,
 } = require("./actions/statisticActions/personalBestAction/personalBestAction");
 const {
+  exersiceProgressAction,
+} = require("./actions/statisticActions/exersiceProgressAction/exersiceProgressAction");
+const {
   workoutByPeriodAction,
   finishWorkoutByPeriodAction,
 } = require("./actions/workoutAction/workoutByPeriodAction/workoutByPeriodAction");
@@ -111,6 +114,7 @@ let functionsEnum = {
   removeExistSet: botHelper.getButtonsLabelsForNewSetCommand()[1],
   createNewUser: botHelper.getstartOptions()[0],
   personalBests: botHelper.getStatOptions()[0],
+  exersiceProgress: botHelper.getStatOptions()[1],
   workoutByPeriod: botHelper.getWorkoutOptions()[3],
 };
 
@@ -133,6 +137,7 @@ bot.action(new RegExp(), async (ctx) => {
       ? currentUser.path.split("/")[1]
       : currentUser.path.split("/")[0];
 
+    console.log(individualScriptPointer);
     switch (individualScriptPointer) {
       case functionsEnum.createNewWorkout:
         const error0 = await createNewWorkoutAction(ctx);
@@ -165,6 +170,11 @@ bot.action(new RegExp(), async (ctx) => {
       case functionsEnum.personalBests:
         const error4 = await personalBestAction(ctx);
         if (error4) throw error4;
+        break;
+
+      case functionsEnum.exersiceProgress:
+        const error44 = await exersiceProgressAction(ctx);
+        if (error44) throw error44;
         break;
 
       case functionsEnum.workoutByPeriod:
