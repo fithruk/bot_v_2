@@ -19,7 +19,7 @@ const getStat = async (ctx) => {
     ); // Вынести ключ в енам ключей, использовать как элемент path в объекте юзера
   } catch (error) {
     console.log("Error in 'newSetCommand'");
-    console.log(error.message);
+    console.log(error);
   }
 };
 

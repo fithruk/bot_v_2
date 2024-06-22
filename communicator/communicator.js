@@ -6,7 +6,6 @@ class Communicator {
   constructor(ctx) {
     this.#ctx = ctx;
   }
-
   reply = async (message) => {
     await this.#ctx.reply(message);
   };

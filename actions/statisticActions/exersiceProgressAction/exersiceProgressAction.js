@@ -116,7 +116,17 @@ const exersiceProgressAction = async (ctx) => {
       const [_, groupe, subGroupe, exersice] = currentUser.path.split("/");
       const exersiceSring = `${groupe} - ${subGroupe} - ${exersice}`;
       communicator.reply("Data processing...");
-      await apiService.getStatByExersice(userName, exersiceSring);
+      const { data, status } = await apiService.getStatByExersice(
+        userName,
+        exersiceSring
+      );
+      if (status == 200) {
+        botHelper.historyDestroyer(ctx);
+        abortUserAnswerData(currentUser);
+        return communicator.reply(data.imgUrl);
+      }
+      abortUserAnswerData(currentUser);
+      communicator.reply("Got error diring fetching graph image, try again");
       break;
   }
 };

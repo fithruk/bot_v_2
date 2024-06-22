@@ -46,8 +46,8 @@ const startCommand = async (ctx) => {
       );
     }
   } catch (error) {
-    console.log(error.message);
     console.log("error in startComand");
+    console.log(error);
   }
 };
 
