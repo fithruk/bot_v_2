@@ -112,7 +112,7 @@ const exersiceProgressAction = async (ctx) => {
           "Нарушен проядок выполнения запросов, попробуйте еще раз"
         );
       }
-      //Here...
+
       const [_, groupe, subGroupe, exersice] = currentUser.path.split("/");
       const exersiceSring = `${groupe} - ${subGroupe} - ${exersice}`;
       communicator.reply("Data processing...");
@@ -124,6 +124,11 @@ const exersiceProgressAction = async (ctx) => {
         botHelper.historyDestroyer(ctx);
         abortUserAnswerData(currentUser);
         return communicator.reply(data.imgUrl);
+      }
+      if (status == 204) {
+        botHelper.historyDestroyer(ctx);
+        abortUserAnswerData(currentUser);
+        return communicator.reply("Данные отсутствуют");
       }
       abortUserAnswerData(currentUser);
       communicator.reply("Got error diring fetching graph image, try again");
