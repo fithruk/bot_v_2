@@ -1,6 +1,7 @@
 const { apiService } = require("../../../apiService/apiService");
 const botHelper = require("../../../helpers/helpers");
 const HtmlResponce = require("../../../htmlResponce/responce");
+const Communicator = require("../../../communicator/communicator");
 
 const getCurrentWorkoutAction = async (ctx) => {
   const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
@@ -10,6 +11,10 @@ const getCurrentWorkoutAction = async (ctx) => {
     const { currentUserSession } = await apiService.getCurrentTraining(
       userName
     );
+
+    if (!currentUserSession) {
+      return new Communicator(ctx).reply("У вас нет активной тренировки");
+    }
 
     const exerciseArray = [...currentUserSession.exercises];
 

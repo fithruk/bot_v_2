@@ -1,6 +1,7 @@
 const { apiService } = require("../../../apiService/apiService");
 const botHelper = require("../../../helpers/helpers");
 const HtmlResponce = require("../../../htmlResponce/responce");
+const Communicator = require("../../../communicator/communicator");
 
 const closeWorkoutAction = async (ctx) => {
   const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
@@ -17,7 +18,7 @@ const closeWorkoutAction = async (ctx) => {
       }
       await htmlResponce.reportOfFinishedWorkout(data);
     } else {
-      communicator.reply("У вас нет активной тренировки.");
+      new Communicator(ctx).reply("У вас нет активной тренировки.");
     }
   } catch (error) {
     return new Error(error.message);
