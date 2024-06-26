@@ -252,4 +252,9 @@ bot.on("message", async (ctx) => {
   }
 });
 
+bot.catch((err, ctx) => {
+  console.error(`Error for ${ctx.updateType}`, err);
+  ctx.reply("An unexpected error occurred. Try again.");
+});
+
 bot.launch();
