@@ -27,6 +27,8 @@ class BotHelper {
     "Введите номер телефона в формате 380XXXXXXXX:",
   ];
 
+  #libraryOtions = ["Библиотека управжений"];
+
   #answersForNewSet = {
     currentGroup: null,
     subGroup: null,
@@ -47,6 +49,10 @@ class BotHelper {
 
   getstartOptions = () => {
     return this.#startOptions;
+  };
+
+  getLibraryOptions = () => {
+    return this.#libraryOtions;
   };
 
   getButtonsLabelsForNewSetCommand = () => {

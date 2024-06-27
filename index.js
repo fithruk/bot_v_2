@@ -3,6 +3,7 @@ const { workoutsCommand } = require("./commands/workouts");
 const { newSetCommand } = require("./commands/newSet");
 const { startCommand } = require("./commands/start");
 const { getStat } = require("./commands/getStat");
+const { getLibrary } = require("./commands/library");
 const { commands } = require("./help");
 const botHelper = require("./helpers/helpers");
 const userState = require("./userState/userState");
@@ -40,6 +41,8 @@ const {
 const {
   getCurrentWorkoutAction,
 } = require("./actions/workoutAction/currentWorkoutAction/currentWorkoutAction");
+
+const { getLibraryAction } = require("./actions/library/libraryAction");
 
 require("dotenv").config();
 
@@ -100,6 +103,17 @@ bot.command("getStat", async (ctx) => {
   }
 });
 
+bot.command("library", async (ctx) => {
+  try {
+    await botHelper.historyDestroyer(ctx);
+    await getLibrary(ctx);
+  } catch (error) {
+    console.log("Error in 'bot.command'library'");
+    console.log(error.message);
+    await ctx.reply(error.message);
+  }
+});
+
 bot.help(async (ctx) => {
   await botHelper.historyDestroyer(ctx);
   ctx.reply(commands);
@@ -116,6 +130,7 @@ let functionsEnum = {
   personalBests: botHelper.getStatOptions()[0],
   exersiceProgress: botHelper.getStatOptions()[1],
   workoutByPeriod: botHelper.getWorkoutOptions()[3],
+  library: botHelper.getLibraryOptions()[0],
 };
 
 bot.action(new RegExp(), async (ctx) => {
@@ -180,6 +195,11 @@ bot.action(new RegExp(), async (ctx) => {
       case functionsEnum.workoutByPeriod:
         const error5 = await workoutByPeriodAction(ctx);
         if (error5) throw error5;
+        break;
+
+      case functionsEnum.library:
+        const error6 = await getLibraryAction(ctx);
+        if (error6) throw error6;
         break;
 
       default:
