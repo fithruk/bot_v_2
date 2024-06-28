@@ -10,6 +10,12 @@ class Communicator {
     await this.#ctx.reply(message);
   };
 
+  replyWithAnimation = async (imgUrl) => {
+    await this.#ctx.replyWithAnimation({
+      source: (imgUrl += ".gif"),
+    });
+  };
+
   replyWithHTML = async (
     titleQuestion = "",
     buttonsArray = [],

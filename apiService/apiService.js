@@ -162,6 +162,19 @@ class ApiService {
 
     return { data, status };
   }
+
+  async loadExImage(groupe, subGroupe, exName) {
+    const { data, status } = await axios.post(
+      `${process.env.API_ADRESS}/exercise/loadExersiceImage`,
+      {
+        groupe,
+        subGroupe,
+        exName,
+      }
+    );
+
+    return { data, status };
+  }
 }
 
 const apiService = new ApiService();

@@ -24,11 +24,7 @@ const exersiceProgressAction = async (ctx) => {
     return userUnswers[key] != null ? true : false;
   };
 
-  let groupes,
-    subGroup,
-    exersicesBySubGroupe,
-    exercise,
-    countOfReps = new Array(30).fill(1).map((_, ind) => (ind += 1));
+  let groupes, subGroup, exersicesBySubGroupe, exercise;
 
   await botHelper.historyDestroyer(ctx);
   switch (currentUser.label) {
@@ -120,18 +116,21 @@ const exersiceProgressAction = async (ctx) => {
         userName,
         exersiceSring
       );
+      botHelper.historyDestroyer(ctx);
+      abortUserAnswerData(currentUser);
+
       if (status == 200) {
-        botHelper.historyDestroyer(ctx);
-        abortUserAnswerData(currentUser);
         return communicator.reply(data.imgUrl);
       }
+
       if (status == 204) {
-        botHelper.historyDestroyer(ctx);
-        abortUserAnswerData(currentUser);
         return communicator.reply("Данные отсутствуют");
       }
-      abortUserAnswerData(currentUser);
-      communicator.reply("Got error diring fetching graph image, try again");
+
+      communicator.reply("Got error during fetching graph image, try again");
+      break;
+
+    default:
       break;
   }
 };
