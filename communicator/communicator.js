@@ -16,6 +16,11 @@ class Communicator {
     });
   };
 
+  libraryReplyer = async (imgUrl, message) => {
+    await this.reply((message += " :"));
+    await this.replyWithAnimation(imgUrl);
+  };
+
   replyWithHTML = async (
     titleQuestion = "",
     buttonsArray = [],

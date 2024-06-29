@@ -119,9 +119,8 @@ const getLibraryAction = async (ctx) => {
 
       botHelper.resetUserPath(userName);
       abortUserAnswerData(currentUser);
-      await communicator.reply("Loading...");
       await botHelper.historyDestroyer(ctx);
-      await communicator.replyWithAnimation(imgUrl);
+      await communicator.libraryReplyer(imgUrl, exersice);
 
       break;
 
