@@ -17,6 +17,7 @@ const startCommand = async (ctx) => {
       userState.addNewUser(
         new User(userName, botHelper.getQuestionTitlesForNewSet())
       );
+      communicator.reply("Вы были успешно авторизированы.");
       return await communicator.markupReplier(
         "Выберите опцию :",
         botHelper
