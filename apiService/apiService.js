@@ -175,6 +175,17 @@ class ApiService {
 
     return { data, status };
   }
+
+  async loadDescriptionOfExersice(exName) {
+    const { data, status } = await axios.post(
+      `${process.env.API_ADRESS}/exercise/loadDescriptionOfExersice`,
+      {
+        exName,
+      }
+    );
+
+    return { data, status };
+  }
 }
 
 const apiService = new ApiService();

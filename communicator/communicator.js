@@ -16,9 +16,33 @@ class Communicator {
     });
   };
 
-  libraryReplyer = async (imgUrl, message) => {
+  exerciseDescriptionReply = async (exercise) => {
+    let message = `*${exercise.name}*\n\n`;
+    message += "Шаги выполнения:\n";
+    exercise.steps.forEach((step) => {
+      message += `_${step.step_name}_\n`;
+      step.description.forEach((desc) => {
+        message += `*${desc.phase}:* ${desc.instruction}\n`;
+        // console.log(desc);
+        // message += step.description.join();
+      });
+      message += "\n";
+    });
+
+    message += "Целевые мышцы:\n";
+    message += `Основные: ${exercise.target_muscles.primary.join(", ")}\n`;
+    message += `Вторичные: ${exercise.target_muscles.secondary.join(", ")}\n`;
+    message += `Дополнительные: ${exercise.target_muscles.additional.join(
+      ", "
+    )}\n`;
+    return message;
+  };
+
+  libraryReplyer = async (imgUrl, message, exerciseDescription) => {
+    const reply = await this.exerciseDescriptionReply(exerciseDescription);
     await this.reply((message += " :"));
     await this.replyWithAnimation(imgUrl);
+    await this.reply(reply);
   };
 
   replyWithHTML = async (

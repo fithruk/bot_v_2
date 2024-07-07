@@ -117,10 +117,13 @@ const getLibraryAction = async (ctx) => {
         exersice
       );
 
+      const { data: exerciseDescription } =
+        await apiService.loadDescriptionOfExersice(exersice);
+
       botHelper.resetUserPath(userName);
       abortUserAnswerData(currentUser);
       await botHelper.historyDestroyer(ctx);
-      await communicator.libraryReplyer(imgUrl, exersice);
+      await communicator.libraryReplyer(imgUrl, exersice, exerciseDescription);
 
       break;
 
