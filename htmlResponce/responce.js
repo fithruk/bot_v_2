@@ -131,8 +131,9 @@ class HtmlResponce {
   }
 
   async reportOfFinishedWorkout(workoutStatData) {
-    const { averageTimeOfRest, workoutDuration, exLength } = workoutStatData;
-    let reportMessage = `Продолжительность тренировки составила: ${workoutDuration.durationInHours} : ${workoutDuration.durationInMinutes}\nСреднее время отдыха между подходами: ${averageTimeOfRest.averageRestInMinutes} минут ${averageTimeOfRest.averageRestInSeconds}секунд\nВсего было выполнено ${exLength} упражнений`;
+    const { averageTimeOfRest, workoutDuration, exLength, tonnage } =
+      workoutStatData;
+    let reportMessage = `Продолжительность тренировки составила: ${workoutDuration.durationInHours} : ${workoutDuration.durationInMinutes}\nСреднее время отдыха между подходами: ${averageTimeOfRest.averageRestInMinutes} минут ${averageTimeOfRest.averageRestInSeconds}секунд\nВсего было выполнено ${exLength} упражнений\nОбъем тренировки составил ${tonnage} кг.`;
     await this.communicator.reply(reportMessage);
   }
 }
