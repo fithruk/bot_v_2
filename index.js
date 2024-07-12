@@ -81,7 +81,7 @@ bot.command("workouts", async (ctx) => {
   }
 });
 
-bot.command("newSet", async (ctx) => {
+bot.command("new_set", async (ctx) => {
   try {
     await botHelper.historyDestroyer(ctx);
     await newSetCommand(ctx);
@@ -92,7 +92,7 @@ bot.command("newSet", async (ctx) => {
   }
 });
 
-bot.command("getStat", async (ctx) => {
+bot.command("get_stat", async (ctx) => {
   try {
     await botHelper.historyDestroyer(ctx);
     await getStat(ctx);
