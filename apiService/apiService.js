@@ -163,6 +163,17 @@ class ApiService {
     return { data, status };
   }
 
+  async getTonnageStat(userName) {
+    const { data, status } = await axios.post(
+      `${process.env.API_ADRESS}/analitics/statByTonnage`,
+      {
+        userName,
+      }
+    );
+
+    return { data, status };
+  }
+
   async loadExImage(groupe, subGroupe, exName) {
     const { data, status } = await axios.post(
       `${process.env.API_ADRESS}/exercise/loadExersiceImage`,

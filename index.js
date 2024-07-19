@@ -35,6 +35,9 @@ const {
   exersiceProgressAction,
 } = require("./actions/statisticActions/exersiceProgressAction/exersiceProgressAction");
 const {
+  loadVolumeAction,
+} = require("./actions/statisticActions/loadVolumeAction/loadVolumeAcrion");
+const {
   workoutByPeriodAction,
   finishWorkoutByPeriodAction,
 } = require("./actions/workoutAction/workoutByPeriodAction/workoutByPeriodAction");
@@ -129,6 +132,7 @@ let functionsEnum = {
   createNewUser: botHelper.getstartOptions()[0],
   personalBests: botHelper.getStatOptions()[0],
   exersiceProgress: botHelper.getStatOptions()[1],
+  loadVolume: botHelper.getStatOptions()[2],
   workoutByPeriod: botHelper.getWorkoutOptions()[3],
   library: botHelper.getLibraryOptions()[0],
 };
@@ -190,6 +194,11 @@ bot.action(new RegExp(), async (ctx) => {
       case functionsEnum.exersiceProgress:
         const error44 = await exersiceProgressAction(ctx);
         if (error44) throw error44;
+        break;
+
+      case functionsEnum.loadVolume:
+        const error444 = await loadVolumeAction(ctx);
+        if (error444) throw error444;
         break;
 
       case functionsEnum.workoutByPeriod:
@@ -272,9 +281,9 @@ bot.on("message", async (ctx) => {
   }
 });
 
+bot.launch();
+
 bot.catch((err, ctx) => {
   console.error(`Error for ${ctx.updateType}`, err);
   ctx.reply("An unexpected error occurred. Try again.");
 });
-
-bot.launch();
