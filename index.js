@@ -8,6 +8,7 @@ const { commands } = require("./help");
 const botHelper = require("./helpers/helpers");
 const userState = require("./userState/userState");
 const Communicator = require("./communicator/communicator");
+const { fetchWithRetry } = require("./reconnect/reconnect");
 const {
   addNewSetAction,
   finishNewSetAction,
@@ -61,6 +62,32 @@ db.once("open", () => {
 });
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
+
+// Обработчик ошибок для запросов к API Telegram
+bot.use(async (ctx, next) => {
+  try {
+    await next(); // Продолжить выполнение других middleware
+  } catch (error) {
+    if (error.code === "ETIMEDOUT") {
+      console.error("Request timed out, retrying...");
+      // Повторный запрос с использованием fetchWithRetry
+      try {
+        // Функция для выполнения запроса с повторными попытками
+        await fetchWithRetry(
+          `https://api.telegram.org/bot7491204314:${process.env.BOT_TOKEN}/getMe`,
+          {}
+        );
+        console.log("Retry successful");
+      } catch (retryError) {
+        console.error("Retry failed:", retryError);
+        ctx.reply("An unexpected error occurred. Please try again later.");
+      }
+    } else {
+      console.error("An unexpected error occurred:", error);
+      ctx.reply("An unexpected error occurred. Please try again later.");
+    }
+  }
+});
 
 bot.start(async (ctx) => {
   try {
