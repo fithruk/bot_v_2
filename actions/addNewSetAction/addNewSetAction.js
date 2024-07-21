@@ -173,7 +173,7 @@ const finishNewSetAction = async (ctx, currentUser, message) => {
     abortUserAnswerData(currentUser);
     await botHelper.historyDestroyer(ctx);
     await communicator.markupReplier(
-      "Подход успешно сохранен!\nЧто бы выбрать новое упражнение выполните \t'/new_set'\nДобавить новый подход в текущее? ",
+      "Подход успешно сохранен!\nЧто бы выбрать новое упражнение выполните \t'/new_set'\nДобавить новый подход в текущее упражнение? ",
       [botHelper.getButtonsLabelsForNewSetCommand()[2]],
       "typeOfAction"
     );
