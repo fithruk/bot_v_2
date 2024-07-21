@@ -156,6 +156,7 @@ let functionsEnum = {
   closeCurrentWorkout: botHelper.getWorkoutOptions()[2],
   createNewSet: botHelper.getButtonsLabelsForNewSetCommand()[0],
   removeExistSet: botHelper.getButtonsLabelsForNewSetCommand()[1],
+  proceedCurrentExWithNewSet: botHelper.getButtonsLabelsForNewSetCommand()[2],
   createNewUser: botHelper.getstartOptions()[0],
   personalBests: botHelper.getStatOptions()[0],
   exersiceProgress: botHelper.getStatOptions()[1],
@@ -207,6 +208,11 @@ bot.action(new RegExp(), async (ctx) => {
       case functionsEnum.removeExistSet:
         const error2 = await removeExistingSetAction(ctx);
         if (error2) throw error2;
+        break;
+
+      case functionsEnum.proceedCurrentExWithNewSet:
+        const error13 = await addNewSetAction(ctx);
+        if (error13) throw error13;
         break;
 
       case functionsEnum.createNewUser:

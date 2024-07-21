@@ -11,6 +11,7 @@ class User {
     this.answers = botHelper.getAnswersForNewSet();
     this.path = "";
     this.#exercises = [];
+    this.userCopy = {};
   }
 
   updateCurrentLabel = () => {
@@ -81,6 +82,24 @@ class User {
     } catch (error) {
       return null;
     }
+  };
+
+  saveDataForProceedCurrentEx = (user) => {
+    this.userCopy = { ...user };
+  };
+
+  resetUserCopy = () => {
+    this.userCopy = {};
+  };
+
+  getUserCopy = () => {
+    return this.userCopy;
+  };
+
+  abortUserAnswerData = () => {
+    this.resetPath();
+    this.resetUnswers();
+    this.resetCurrentLabel();
   };
 }
 

@@ -5,8 +5,9 @@ class BotHelper {
   #startOptions = ["Создать новый профиль"];
 
   #buttonsLabelsForNewSetCommand = [
-    "Добавить новый подход",
+    "Выбрать упражнение",
     "Удалить созданный подход",
+    "Добавить новый подход",
   ];
 
   #questionTitlesForNewSet = [

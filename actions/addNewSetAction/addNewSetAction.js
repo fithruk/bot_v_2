@@ -4,9 +4,7 @@ const { apiService } = require("../../apiService/apiService");
 const userState = require("../../userState/userState");
 
 const abortUserAnswerData = (user) => {
-  user.resetPath();
-  user.resetUnswers();
-  user.resetCurrentLabel();
+  user.abortUserAnswerData();
 };
 
 const userAnswerKeysEnum = {
@@ -26,6 +24,16 @@ const addNewSetAction = async (ctx) => {
     return userUnswers[key] != null ? true : false;
   };
 
+  if (currentUser.getUserCopy().currentLabel === 4) {
+    const tempUser = currentUser.getUserCopy();
+    currentUser.currentLabel = 3;
+    currentUser.answers.currentGroup = tempUser.answers.currentGroup;
+    currentUser.answers.subGroup = tempUser.answers.subGroup;
+    currentUser.answers.exersice = tempUser.answers.exersice;
+    currentUser.path = tempUser.path.split("/").slice(0, 4).join("/");
+    currentUser.resetUserCopy();
+    currentUser.label = currentUser.questionTitles[currentUser.currentLabel];
+  }
   let groupes,
     subGroup,
     exersicesBySubGroupe,
@@ -147,6 +155,7 @@ const addNewSetAction = async (ctx) => {
 
 const finishNewSetAction = async (ctx, currentUser, message) => {
   const communicator = new Communicator(ctx);
+
   // Придумать как сбросить данные на последнем шаге, как нибудь потом
   try {
     const callback = botHelper.callbackCreator(
@@ -160,9 +169,17 @@ const finishNewSetAction = async (ctx, currentUser, message) => {
       currentUser.answers.countOfReps,
       currentUser.answers.weightOfequipment
     );
+    currentUser.saveDataForProceedCurrentEx(currentUser);
     abortUserAnswerData(currentUser);
     await botHelper.historyDestroyer(ctx);
-    communicator.reply("Подход успешно сохранен!");
+    await communicator.markupReplier(
+      "Подход успешно сохранен!\nЧто бы выбрать новое упражнение выполните \t'/new_set'\nДобавить новый подход в текущее? ",
+      [botHelper.getButtonsLabelsForNewSetCommand()[2]],
+      "typeOfAction"
+    );
+    // await communicator.reply(
+    //   "Подход успешно сохранен!\nДобавить новый подход ?\n'/new_set'"
+    // );
   } catch (error) {
     console.log("Error in bot.on'message', during finish exersice");
     console.log(error.message);
