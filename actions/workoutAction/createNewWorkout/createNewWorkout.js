@@ -8,12 +8,6 @@ const createNewWorkoutAction = async (ctx) => {
   const responce = await apiService.initialNewTraining(userName);
   botHelper.resetUserPath(userName);
 
-  await communicator.markupReplier(
-    "Выберите нужную опцию :",
-    ["Свободная тренировка", "Тренировка по плану"],
-    "typeOfAction"
-  );
-
   switch (responce.status) {
     case "succes":
       communicator.reply("Новая тренировка успешно создана");
