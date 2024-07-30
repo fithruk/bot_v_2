@@ -177,9 +177,6 @@ const finishNewSetAction = async (ctx, currentUser, message) => {
       [botHelper.getButtonsLabelsForNewSetCommand()[2]],
       "typeOfAction"
     );
-    // await communicator.reply(
-    //   "Подход успешно сохранен!\nДобавить новый подход ?\n'/new_set'"
-    // );
   } catch (error) {
     console.log("Error in bot.on'message', during finish exersice");
     console.log(error.message);

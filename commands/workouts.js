@@ -13,7 +13,7 @@ const workoutsCommand = async (ctx) => {
 
   await communicator.markupReplier(
     "Выберите нужную опцию :",
-    botHelper.getWorkoutOptions(),
+    botHelper.getWorkoutOptions().slice(0, 4),
     "typeOfAction"
   );
 };
