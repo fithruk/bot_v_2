@@ -24,6 +24,8 @@ const {
 } = require("./actions/createNewUserAction/createNewUserAction");
 const {
   createNewWorkoutAction,
+  workoutSwitch,
+  workoutWithProgramAction,
 } = require("./actions/workoutAction/createNewWorkout/createNewWorkout");
 const {
   closeWorkoutAction,
@@ -154,6 +156,8 @@ let functionsEnum = {
   createNewWorkout: botHelper.getWorkoutOptions()[0],
   currentWorkout: botHelper.getWorkoutOptions()[1],
   closeCurrentWorkout: botHelper.getWorkoutOptions()[2],
+  selfWorkout: botHelper.getWorkoutOptions()[4],
+  workoutWithProgram: botHelper.getWorkoutOptions()[5],
   createNewSet: botHelper.getButtonsLabelsForNewSetCommand()[0],
   removeExistSet: botHelper.getButtonsLabelsForNewSetCommand()[1],
   proceedCurrentExWithNewSet: botHelper.getButtonsLabelsForNewSetCommand()[2],
@@ -187,8 +191,16 @@ bot.action(new RegExp(), async (ctx) => {
     console.log(individualScriptPointer);
     switch (individualScriptPointer) {
       case functionsEnum.createNewWorkout:
+        const error001 = await workoutSwitch(ctx);
+        if (error001) throw error001;
+        break;
+      case functionsEnum.selfWorkout:
         const error0 = await createNewWorkoutAction(ctx);
         if (error0) throw error0;
+        break;
+      case functionsEnum.workoutWithProgram:
+        const error003 = await workoutWithProgramAction(ctx);
+        if (error003) throw error003;
         break;
       case functionsEnum.currentWorkout:
         const error00 = await getCurrentWorkoutAction(ctx);

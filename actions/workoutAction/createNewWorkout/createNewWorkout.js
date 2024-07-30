@@ -24,7 +24,27 @@ const createNewWorkoutAction = async (ctx) => {
   }
 };
 
-module.exports = { createNewWorkoutAction };
+const workoutSwitch = async (ctx) => {
+  const communicator = new Communicator(ctx);
+  await communicator.markupReplier(
+    "Выберите нужную опцию :",
+    botHelper.getWorkoutOptions().slice(4),
+    "typeOfAction"
+  );
+};
+
+const workoutWithProgramAction = async (ctx) => {
+  const communicator = new Communicator(ctx);
+  const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
+  communicator.reply("workoutWithProgramAction");
+  botHelper.resetUserPath(userName);
+};
+
+module.exports = {
+  createNewWorkoutAction,
+  workoutSwitch,
+  workoutWithProgramAction,
+};
 // await communicator.markupReplier(
 //   "Выберите нужную опцию :",
 //   ["Свободная тренировка", "Тренировка по плану"],
