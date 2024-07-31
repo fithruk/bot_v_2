@@ -155,7 +155,7 @@ bot.help(async (ctx) => {
 let functionsEnum = {
   createNewWorkout: botHelper.getWorkoutOptions()[0],
   currentWorkout: botHelper.getWorkoutOptions()[1],
-  closeCurrentWorkout: botHelper.getWorkoutOptions()[2],
+  closeCurrentWorkout: botHelper.getWorkoutOptions()[3],
   selfWorkout: botHelper.getWorkoutOptions()[4],
   workoutWithProgram: botHelper.getWorkoutOptions()[5],
   createNewSet: botHelper.getButtonsLabelsForNewSetCommand()[0],
@@ -165,7 +165,7 @@ let functionsEnum = {
   personalBests: botHelper.getStatOptions()[0],
   exersiceProgress: botHelper.getStatOptions()[1],
   loadVolume: botHelper.getStatOptions()[2],
-  workoutByPeriod: botHelper.getWorkoutOptions()[3],
+  workoutByPeriod: botHelper.getWorkoutOptions()[2],
   library: botHelper.getLibraryOptions()[0],
 };
 

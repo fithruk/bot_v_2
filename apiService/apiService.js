@@ -8,6 +8,16 @@ class ApiService {
     return data;
   }
 
+  async initialNewTrainingWithPpogram(userName) {
+    const { data } = await axios.post(
+      `${process.env.API_ADRESS}/trainings/createNewTrainingSessionWithProgram`,
+      {
+        userName,
+      }
+    );
+    return data;
+  }
+
   async getAllMusclesGroupes() {
     const { data } = await axios.get(`${process.env.API_ADRESS}/exercise`);
     return data;

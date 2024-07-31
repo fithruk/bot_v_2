@@ -36,8 +36,26 @@ const workoutSwitch = async (ctx) => {
 const workoutWithProgramAction = async (ctx) => {
   const communicator = new Communicator(ctx);
   const userName = botHelper.checkUserNameFromCallbackQuery(ctx);
-  communicator.reply("workoutWithProgramAction");
+
+  const responce = await apiService.initialNewTrainingWithPpogram(userName);
   botHelper.resetUserPath(userName);
+
+  switch (responce.status) {
+    case "succes":
+      communicator.reply(
+        "Новая тренировка успешно создана, план доступен там-то там-то"
+      );
+      return;
+
+    case "exist":
+      communicator.reply("Актуальная тренировка еще не закончена");
+      return;
+
+    case "error":
+      return new Error("error");
+    default:
+      return new Error("unexpected error");
+  }
 };
 
 module.exports = {
