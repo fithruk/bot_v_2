@@ -7,6 +7,7 @@ const newSetCommand = async (ctx) => {
   const userName = botHelper.checkUserName(ctx);
   const communicator = new Communicator(ctx);
   const currentUser = userState.findUser(userName);
+
   currentUser.abortUserAnswerData();
   currentUser.resetUserCopy();
 

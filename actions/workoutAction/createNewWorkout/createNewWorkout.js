@@ -52,7 +52,7 @@ const workoutWithProgramAction = async (ctx) => {
       return;
 
     case "error":
-      return new Error("error");
+      return new Error("У вас не осталось тренировок с тренером");
     default:
       return new Error("unexpected error");
   }
@@ -63,8 +63,3 @@ module.exports = {
   workoutSwitch,
   workoutWithProgramAction,
 };
-// await communicator.markupReplier(
-//   "Выберите нужную опцию :",
-//   ["Свободная тренировка", "Тренировка по плану"],
-//   "typeOfAction"
-// );

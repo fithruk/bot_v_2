@@ -207,6 +207,19 @@ class ApiService {
 
     return { data, status };
   }
+
+  async loadPersonalWorkoutPlan(userName) {
+    const { data, status } = await axios.get(
+      `${process.env.API_ADRESS}/trainings/myWorkoutPlan`,
+      {
+        params: {
+          userName,
+        },
+      }
+    );
+
+    return { data, status };
+  }
 }
 
 const apiService = new ApiService();

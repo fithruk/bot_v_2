@@ -85,7 +85,7 @@ class HtmlResponce {
   ${exercises
     .map(
       ({ exercise, numberOfSet, countOfReps, weight }) => `
-  <b>• Упражнение:</b> ${exercise}
+• Упражнение: ${exercise}
     Номер подхода: ${numberOfSet}
     Количество повторений: ${countOfReps}
     Вес снаряда :   ${weight} кг

@@ -1,7 +1,9 @@
 const { Telegraf, Markup } = require("telegraf");
+const HtmlResponce = require("./htmlResponce/responce");
 const { workoutsCommand } = require("./commands/workouts");
 const { newSetCommand } = require("./commands/newSet");
 const { startCommand } = require("./commands/start");
+const { myWorkoutPlan } = require("./commands/myWorkoutPlan");
 const { getStat } = require("./commands/getStat");
 const { getLibrary } = require("./commands/library");
 const { commands } = require("./help");
@@ -119,6 +121,17 @@ bot.command("new_set", async (ctx) => {
     await newSetCommand(ctx);
   } catch (error) {
     console.log("Error in 'bot.command'newSet'");
+    console.log(error);
+    await ctx.reply(error.message);
+  }
+});
+
+bot.command("my_workout_plan", async (ctx) => {
+  try {
+    await botHelper.historyDestroyer(ctx);
+    await myWorkoutPlan(ctx);
+  } catch (error) {
+    console.log("Error in 'bot.command'myWorkoutPlan'");
     console.log(error.message);
     await ctx.reply(error.message);
   }
@@ -188,7 +201,7 @@ bot.action(new RegExp(), async (ctx) => {
       ? currentUser.path.split("/")[1]
       : currentUser.path.split("/")[0];
 
-    console.log(individualScriptPointer);
+    console.log(individualScriptPointer + " for " + username);
     switch (individualScriptPointer) {
       case functionsEnum.createNewWorkout:
         const error001 = await workoutSwitch(ctx);
@@ -203,8 +216,10 @@ bot.action(new RegExp(), async (ctx) => {
         if (error003) throw error003;
         break;
       case functionsEnum.currentWorkout:
-        const error00 = await getCurrentWorkoutAction(ctx);
+        const { uniqueExercises, error: error00 } =
+          await getCurrentWorkoutAction(ctx);
         if (error00) throw error00;
+        new HtmlResponce(ctx).currentWorlout(uniqueExercises);
         break;
 
       case functionsEnum.closeCurrentWorkout:

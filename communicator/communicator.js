@@ -68,6 +68,22 @@ class Communicator {
     await botHelper.historyDestroyer(this.#ctx);
     await this.replyWithHTML(titleQuestion, buttonsArray, keyForCallback);
   };
+
+  personalWorkoutPlanReply = async (planArray) => {
+    if (!Array.isArray(planArray)) return;
+
+    const message = planArray
+      .map(
+        (item) => `
+*Упражнение:* ${item.exersice}
+      *Оставшиеся подходы:* ${item.setsLeft}
+      *Ожидаемый вес:* ${item.expectWeight} кг
+      *Ожидаемое количество повторений:* ${item.expectedReps}
+      `
+      )
+      .join("\n");
+    await this.reply(message);
+  };
 }
 
 module.exports = Communicator;
